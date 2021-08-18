@@ -9,6 +9,7 @@ import SignUp from "./src/view/SignUp";
 import RedfinePass from "./src/view/RedfinePass";
 import Index from "./src/view/Index";
 import Profile from "./src/view/Index/Profile";
+import ProfileFields from "./src/view/Index/ProfileFields";
 
 const Stack = createStackNavigator();
 
@@ -46,6 +47,11 @@ export default function Navigation() {
         <Stack.Screen
           name="Profile"
           component={Profile}
+          options={{ headerShown: false, headerTitleAlign: "center" }}
+        />
+        <Stack.Screen
+          name="ProfileFields"
+          component={ProfileFields}
           options={{ headerShown: false, headerTitleAlign: "center" }}
         />
         

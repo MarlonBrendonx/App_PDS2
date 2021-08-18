@@ -1,20 +1,23 @@
 import React, { useState, useEffect,useRef } from 'react';
+import { Plataform } from 'react-native';
 import  MapView,{ Marker,Callout }  from 'react-native-maps';
 import { Image,View,Button,Text,TextInput,TouchableOpacity, Touchable } from 'react-native';
-import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
+import { requestPermissionsAsync, getCurrentPositionAsync, requestForegroundPermissionsAsync } from 'expo-location';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import  styles from './styles';
 import { Avatar, Badge, withBadge } from 'react-native-elements'
 import { Fontisto } from '@expo/vector-icons';
 import Filters from "../FiltersMain";
 import Notification  from "../Notifications";
+import ModalEvents   from '../ModalEvents';
 
 function MapScreen({ navigation }) {
 
     const [currentRegion,setCurrentRegion] = useState(null); 
-
+    const [coords,setCoords] = useState(null);
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalNotificationVisible, setModalNotificationVisible] = useState(false);
+    const [isModalEventsVisible,setModalEventsVisible] = useState(false);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -24,12 +27,45 @@ function MapScreen({ navigation }) {
         setModalNotificationVisible(!isModalNotificationVisible);
     };
 
-    
+    const toggleModalEvents = () => {
+        setModalEventsVisible(!isModalEventsVisible);
+    };
+
+    const ClickMap = (region) => {
+        
+    }
+
+    const handleLocationFinder = async () =>{
+
+        const { granted } = await requestForegroundPermissionsAsync();
+
+                if( granted ){
+                    const { coords } = await getCurrentPositionAsync({
+                        enableHighAccuracy: true,
+                    });
+
+                    const { latitude, longitude  } = coords;
+                    setCurrentRegion({
+
+                        latitude,
+                        longitude,
+                        latitudeDelta:0.04,
+                        longitudeDelta:0.04,
+
+                    })
+        }
+
+        console.log(currentRegion);
+
+    }
+
+
+
     useEffect( ()=>{
 
         async function loadInitialPosition(){
 
-                const { granted } = await requestPermissionsAsync();
+                const { granted } = await requestForegroundPermissionsAsync();
 
                 if( granted ){
                     const { coords } = await getCurrentPositionAsync({
@@ -54,11 +90,19 @@ function MapScreen({ navigation }) {
         loadInitialPosition();
 
     }, []);
+    
+    
+    
+    
     return (
         <>
-            <Notification isVisible={isModalNotificationVisible} onClose={()=> toggleModalNotification()}/>
-            <MapView initialRegion={currentRegion} style={ styles.map } >
-            <Marker coordinate={{ latitude:-18.7254139,longitude:-47.5238353 }} >
+        <ModalEvents isVisible={isModalEventsVisible} onClose={()=> toggleModalEvents()}/>
+        <Notification isVisible={isModalNotificationVisible} onClose={()=> toggleModalNotification()}/>
+        <MapView initialRegion={currentRegion} style={ styles.map } 
+        onPress={toggleModalEvents}
+        >
+        
+          <Marker coordinate={{ latitude:-18.7254139,longitude:-47.5238353 }} >
                 <Image style={styles.avatar} />
                     <Callout onPress={()=>{
                         //
@@ -88,7 +132,7 @@ function MapScreen({ navigation }) {
         
        
         <View style={styles.locationSection}>
-                <TouchableOpacity style={styles.btnMylocation}>
+                <TouchableOpacity style={styles.btnMylocation}  onPress={handleLocationFinder} >
                     <Icon  name="crosshairs" size={20} color="#B33BF6"/>
                 </TouchableOpacity>
         </View>

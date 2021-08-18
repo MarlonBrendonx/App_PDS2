@@ -3,20 +3,25 @@ import { View,Button,Image,TouchableOpacity} from 'react-native';
 import styles from './styles';
 import { Input,Text  } from 'react-native-elements';
 import { AntDesign,Ionicons } from "@expo/vector-icons";
+import  Header  from "../../../components/Header";
 
 function Profile({navigation}){
 
         return (
             <View style={ styles.container }>
-            <View style={ styles.header } >
-               <TouchableOpacity style={ styles.buttonBack } onPress={() => navigation.goBack()}>
-                  <Ionicons name="arrow-undo-outline" size={24} color="black" />
-               </TouchableOpacity>
-               <Text style={ styles.titleHeader } >Perfil</Text>
-            </View>
+            
+            <Header navigation={navigation} title="Perfil"  />
             
             <View style={ styles.btnsContainer}>
-               <TouchableOpacity style={styles.btnOptions}>
+
+               <TouchableOpacity style={styles.btnOptions} 
+
+                     onPress={ () => navigation.navigate("ProfileFields",{
+                        title:'Alterar Nome',
+                        type:'Name',
+
+                     }) }>
+
                     <Image source={require('../../../assets/profile/person.png')} style={styles.icon} />
                     <Text style={styles.btnText}>Nome</Text>
                     
@@ -27,7 +32,12 @@ function Profile({navigation}){
             </View>
 
             <View style={ styles.btnsContainer}>
-               <TouchableOpacity style={styles.btnOptions}>
+               <TouchableOpacity style={styles.btnOptions}
+                     onPress={ () => navigation.navigate("ProfileFields",{
+                        title:'Alterar E-mail',
+                        type:'E-mail',
+
+                     }) }>
                     <Image source={require('../../../assets/profile/email.png')} style={styles.icon} />
                     <Text style={styles.btnText}>E-mail</Text>
                     
@@ -38,7 +48,12 @@ function Profile({navigation}){
             </View>
 
             <View style={ styles.btnsContainer}>
-               <TouchableOpacity style={styles.btnOptions}>
+               <TouchableOpacity style={styles.btnOptions}
+                     onPress={ () => navigation.navigate("ProfileFields",{
+                        title:'Alterar Telefone',
+                        type:'Phone',
+
+                     }) }>
                     <Image source={require('../../../assets/profile/phone.png')} style={styles.icon} />
                     <Text style={styles.btnText}>Telefone</Text>
                </TouchableOpacity>
