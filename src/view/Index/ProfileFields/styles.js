@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     inputText:{
 
         height:50,
-        width:'70%',
+        width:'72%',
         borderBottomWidth:2,
         borderBottomColor:'#B33BF6'
 

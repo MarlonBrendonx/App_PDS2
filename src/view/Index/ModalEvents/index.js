@@ -8,9 +8,10 @@ import ContainerEvent from "../../../components/ContainerEvents";
 import iconevent_1 from "../../../assets/main/event_1.png"
 import iconevent_2 from "../../../assets/main/event_2.png";
 import iconevent_3 from "../../../assets/main/event_3.png";
+import Navigation from '../../../../Navigation';
 
 
-function ModalEvents({ isVisible, onClose }) {
+function ModalEvents({ isVisible, onClose,navigation }) {
    
     return(
       <>
@@ -24,9 +25,9 @@ function ModalEvents({ isVisible, onClose }) {
                 </View>
                 
                 <View style={ styles.modalBody }>
-                    <ContainerEvent title="Animal Perdido"  iconevent={ iconevent_1 } screen="Screen_LostPet" color="#faab64"     />
-                    <ContainerEvent title="Casinha comunitária" iconevent={ iconevent_2 } screen="Screen_CommunityHouse" color="#5cc5c0"   />
-                    <ContainerEvent title="Denúncia" iconevent={ iconevent_3 } screen="Screen_Complaint" color="red" />
+                    <ContainerEvent title="Animal Perdido"  iconevent={ iconevent_1 } screen="LostPet" color="#faab64"  onClose={onClose} navigation={navigation}  />
+                    <ContainerEvent title="Casinha comunitária" iconevent={ iconevent_2 } screen="CommunityHouse" color="#5cc5c0"  onClose={onClose} navigation={navigation}  />
+                    <ContainerEvent title="Denúncia" iconevent={ iconevent_3 } screen="Complaint" color="red" onClose={onClose} navigation={navigation} />
                 </View>
                
             </View>

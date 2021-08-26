@@ -5,13 +5,19 @@ import styles from "./styles";
 
 const Profile = () => {
   return (
-    <View>
-      <ImageModal
-        resizeMode="cover"
-        style={styles.user_profile}
-        source={require("../../assets/avatar.jpg")}
-      />
-    </View>
+    
+    <ImageModal
+    resizeMode="cover"
+    style={{
+      width: 60,
+      height: 60,
+      borderRadius: 50,
+    }}
+    source={
+      require(".././../assets/avatar.jpg")
+    }
+  />
+  
   );
 };
 

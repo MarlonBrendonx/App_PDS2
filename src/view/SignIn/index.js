@@ -8,10 +8,17 @@ import Api  from '../../Api';
 import { AsyncStorage } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 //import { UserContext } from '../../context/UserContext';
+import {useNetInfo} from "@react-native-community/netinfo";
+
 
 function SignIn({navigation}){
 
 		//const{ dispatch: userDispatch } = useContext(UserContext);
+		const netInfo = useNetInfo();
+
+        if( netInfo.isConnected == false ){
+            navigation.navigate("NoInternet");
+        }
 
 		const [hidePass,  setHidePass]     		= useState(true);
 		const [emailField, setEmailField]  		= useState('');

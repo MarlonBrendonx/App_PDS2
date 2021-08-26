@@ -21,16 +21,13 @@ const styles = StyleSheet.create({
   },
   drawer_content: {
     flex: 1,
-    backgroundColor: "#CDCDCD",
+    
   },
   drawer_header: {
-    flex: 2,
-    borderWidth:1,
-    borderColor:'#64dcd4',
-    paddingTop: 60,
-    paddingHorizontal: 20,
+    height:'30%',
     justifyContent: "center",
     alignItems: "center",
+
   },
   drawer_body: {
     flex: 6,
@@ -39,10 +36,10 @@ const styles = StyleSheet.create({
   viewEmail: {
     
     width: "100%",
-    height: 30,
-    marginTop: 20,
-    marginBottom: 20,
+    top:80,
+    left:20,
     flexDirection: "row",
+
   },
   text: {
     marginLeft: 0,
@@ -50,8 +47,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   user: {
+    top:50,
     flexDirection: "row",
     width:'100%', 
+    left:20
   },
   footer: {
     flex: 0.5,
@@ -62,6 +61,15 @@ const styles = StyleSheet.create({
     borderTopColor: "#c1c1c1",
     backgroundColor: "#FFF",
   },
+  backgroundImg:{
+
+    width:'100%',
+    height:'100%',
+    backgroundColor: 'rgb(164, 0, 255)' 
+  },
+  overlay:{
+    backgroundColor:'rgba(255,100,10,0.5)',
+  }
 });
 
 export default styles;

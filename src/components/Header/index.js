@@ -14,7 +14,7 @@ const Header = (props) => {
                 <Ionicons name="arrow-undo-outline" size={24} color="black" />
             </TouchableOpacity>
             
-            <Text style={ styles.titleHeader } >{ props.title } </Text>
+            <Text style={ styles.titleHeader }> { props.title } </Text>
             
         </View>
   );

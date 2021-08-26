@@ -10,6 +10,9 @@ import { Fontisto } from '@expo/vector-icons';
 import Filters from "../FiltersMain";
 import Notification  from "../Notifications";
 import ModalEvents   from '../ModalEvents';
+import CalloutMap from "../../../components/Callouts/CalloutLostPet";
+import CalloutMap_2 from '../../../components/Callouts/CalloutCommunityHouse';
+import CalloutMap_3 from '../../../components/Callouts/CalloutComplaint';
 
 function MapScreen({ navigation }) {
 
@@ -96,26 +99,14 @@ function MapScreen({ navigation }) {
     
     return (
         <>
-        <ModalEvents isVisible={isModalEventsVisible} onClose={()=> toggleModalEvents()}/>
+        <ModalEvents isVisible={isModalEventsVisible} onClose={()=> toggleModalEvents()} navigation={navigation} />
         <Notification isVisible={isModalNotificationVisible} onClose={()=> toggleModalNotification()}/>
         <MapView initialRegion={currentRegion} style={ styles.map } 
         onPress={toggleModalEvents}
         >
-        
-          <Marker coordinate={{ latitude:-18.7254139,longitude:-47.5238353 }} >
-                <Image style={styles.avatar} />
-                    <Callout onPress={()=>{
-                        //
-                        navigation.navigate('Profile',{ github_username: 'debmarlon' });
-
-                    }}>
-                        <View style={styles.callout}>
-                            <Text style={styles.devname}>Marlon</Text>
-                            <Text style={styles.devbio}>tese do teste</Text>
-                            <Text style={styles.devtest}>Linux,C,python,Shell</Text>
-                        </View>
-                    </Callout>
-            </Marker>
+        <CalloutMap 	type=""  color="#FAAB64" coordinate={{ latitude:-18.727707,longitude: -47.500065 }} />
+				<CalloutMap_2 type=""  color="#5cc5c0" coordinate={{ latitude:-18.724089,longitude:  -47.490387 }} />
+				<CalloutMap_3 type=""  color="red" coordinate={{ latitude:-18.735917,longitude:  -47.486853 }} />
         </MapView>
         <View style={styles.topSection}>
 
@@ -132,18 +123,17 @@ function MapScreen({ navigation }) {
         
        
         <View style={styles.locationSection}>
-                <TouchableOpacity style={styles.btnMylocation}  onPress={handleLocationFinder} >
-                    <Icon  name="crosshairs" size={20} color="#B33BF6"/>
-                </TouchableOpacity>
+        	<TouchableOpacity style={styles.btnMylocation}  onPress={handleLocationFinder} >
+          	<Icon  name="crosshairs" size={20} color="#B33BF6"/>
+        	</TouchableOpacity>
         </View>
         
         <View style={styles.form}>
 
-        <View style={styles.searchSection}>
-            
-            <TouchableOpacity style={styles.btnSettings}>
-                <Icon style={styles.searchIcon} name="search" size={20} color="#000"/>
-            </TouchableOpacity>
+        <View style={styles.searchSection}>    
+        	<TouchableOpacity style={styles.btnSettings}>
+          	<Icon style={styles.searchIcon} name="search" size={20} color="#000"/>
+        	</TouchableOpacity>
             
             <TextInput
                 style={styles.input}

@@ -33,11 +33,13 @@ function Profile({navigation}){
 
             <View style={ styles.btnsContainer}>
                <TouchableOpacity style={styles.btnOptions}
+
                      onPress={ () => navigation.navigate("ProfileFields",{
                         title:'Alterar E-mail',
                         type:'E-mail',
 
                      }) }>
+
                     <Image source={require('../../../assets/profile/email.png')} style={styles.icon} />
                     <Text style={styles.btnText}>E-mail</Text>
                     
@@ -49,11 +51,13 @@ function Profile({navigation}){
 
             <View style={ styles.btnsContainer}>
                <TouchableOpacity style={styles.btnOptions}
+
                      onPress={ () => navigation.navigate("ProfileFields",{
                         title:'Alterar Telefone',
                         type:'Phone',
 
                      }) }>
+                        
                     <Image source={require('../../../assets/profile/phone.png')} style={styles.icon} />
                     <Text style={styles.btnText}>Telefone</Text>
                </TouchableOpacity>
@@ -63,7 +67,8 @@ function Profile({navigation}){
             </View>
 
             <View style={ styles.btnsContainer}>
-               <TouchableOpacity style={styles.btnOptions}>
+               <TouchableOpacity style={styles.btnOptions}
+                     onPress={ () => navigation.navigate("ProfilePassword") }>
                     <Image source={require('../../../assets/profile/key.png')} style={styles.icon} />
                     <Text style={styles.btnText}>Senha</Text>
                </TouchableOpacity>

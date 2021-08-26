@@ -9,7 +9,7 @@ import { Image } from 'react-native';
 function ProfileField({route,navigation}){
 
         const { title, type } = route.params;
-        console.log(title);
+   
         return (
             <View style={ styles.container }>
             

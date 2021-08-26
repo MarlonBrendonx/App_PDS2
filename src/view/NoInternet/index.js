@@ -1,10 +1,14 @@
-import React, { useState,useEffect} from 'react';
+import React, {  BackHandler } from 'react';
 import { View,KeyboardAvoidingView,Image,TouchableOpacity,Text} from 'react-native';
-import styles from '../styles/NoInternet';
+import styles from './styles';
+import RNExitApp from 'react-native-exit-app';
+//import VerifyConnection from './verifyConnection';
 
 function NoInternet(){
 
+        
         return (
+            <>
             
             <View style={ styles.container }>
                 
@@ -16,7 +20,7 @@ function NoInternet(){
                 </View>
 
                 <View style={ styles.imagegif }>
-                    <Image source={ require("../../assets/gif2.gif") } />
+                    <Image source={ require("../../assets/NoInternet/gif2.gif") } />
                 </View>
 
                 <View style={ styles.Buttons } >
@@ -25,13 +29,14 @@ function NoInternet(){
                                 <Text style={styles.submitTextUpdate}>Atualizar</Text>
                         </TouchableOpacity>
                         
-                        <TouchableOpacity style={styles.btnExit}>
+                        <TouchableOpacity style={styles.btnExit}  >
                                 <Text style={styles.textExit}>Sair do aplicativo</Text>
                         </TouchableOpacity>
                     </>
                 </View>
 
             </View>
+        </>
         );
 
 

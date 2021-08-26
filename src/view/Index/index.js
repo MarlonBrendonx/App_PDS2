@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Alert, Text,Button } from "react-native";
+import { View, Image,ImageBackground, Alert, Text,Button } from "react-native";
 
 import { AntDesign,Ionicons } from "@expo/vector-icons";
 
@@ -24,14 +24,22 @@ const Drawer = createDrawerNavigator();
 
 const HeaderDrawer = () => {
   return (
+    
     <View style={styles.drawer_header}>
+      <ImageBackground source={ require("../../assets/walp1.jpg") }
+       style={ styles.backgroundImg }
+       resizeMode="cover" imageStyle={{opacity: 0.45}}
+        >
       <View style={styles.user}>
         <ProfileUser />
-        <Text>Olá Marlon</Text>
+        <Text style={{  color:'#FFF',fontWeight:'bold' }}>Olá Marlon</Text>
       </View>
+      
       <View style={styles.viewEmail}>
         <Text style={styles.text}>marlonbrendo2013@gmail.com</Text>
       </View>
+      
+      </ImageBackground>
     </View>
   );
 };
