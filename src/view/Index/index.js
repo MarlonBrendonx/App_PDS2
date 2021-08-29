@@ -70,7 +70,7 @@ const DrawerContent = ({ navigation }) => {
     {
       id: 2,
       name: "Meus eventos",
-      action: "List",
+      action: "MyEvents",
       icon: <Image source={iconlist} style={{ width:23,height:23 }} />,
     },
     {

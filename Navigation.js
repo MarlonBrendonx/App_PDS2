@@ -15,6 +15,7 @@ import NoInternet  from "./src/view/NoInternet";
 import LostPet from "./src/view/Index/LostPet";
 import CommunityHouse from "./src/view/Index/CommunityHouse";
 import Complaint from "./src/view/Index/Complaint";
+import MyEvents from "./src/view/Index/MyEvents";
 
 const Stack = createStackNavigator();
 
@@ -84,6 +85,12 @@ export default function Navigation() {
           component={Complaint}
           options={optionsHeader}
         />
+        <Stack.Screen
+          name="MyEvents"
+          component={MyEvents}
+          options={optionsHeader}
+        />
+        
         
       </Stack.Navigator>
     </NavigationContainer>
