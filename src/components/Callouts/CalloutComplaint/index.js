@@ -15,7 +15,7 @@ function CalloutMap_3(props) {
 
     return(
 
-      <Marker  coordinate={ props.coordinate } >
+      <Marker  coordinate={{ latitude:parseFloat(props.data.latitude),longitude: parseFloat(props.data.longitude) }} >
       <Image style={styles(props).avatar} source={require("../../../assets/main/event_3.png")}/>
           <Callout visible={CalloutVisible} tooltip={true}  onPress={CalloutVisible => setVisible(false)}>
              <View style={styles(props).callout}>

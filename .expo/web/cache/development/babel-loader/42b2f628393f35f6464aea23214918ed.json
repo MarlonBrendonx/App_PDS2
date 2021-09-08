@@ -1,0 +1,1 @@
+{"ast":null,"code":"global.BASE_API = 'https://9786-191-243-71-76.ngrok.io/api';","map":{"version":3,"sources":["/home/user/Documentos/Git/App_PDS2/config.js"],"names":["global","BASE_API"],"mappings":"AAAAA,MAAM,CAACC,QAAP,GAAgB,yCAAhB","sourcesContent":["global.BASE_API='https://9786-191-243-71-76.ngrok.io/api';\n"]},"metadata":{},"sourceType":"script"}

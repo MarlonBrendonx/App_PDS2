@@ -16,6 +16,7 @@ import LostPet from "./src/view/Index/LostPet";
 import CommunityHouse from "./src/view/Index/CommunityHouse";
 import Complaint from "./src/view/Index/Complaint";
 import MyEvents from "./src/view/Index/MyEvents";
+import NoLocation from "./src/view/NoLocation";
 
 const Stack = createStackNavigator();
 
@@ -53,7 +54,8 @@ export default function Navigation() {
         <Stack.Screen
           name="Profile"
           component={Profile}
-          options={{ headerShown: false, headerTitleAlign: "center" }}
+          options={{ 
+            headerShown: false, headerTitleAlign: "center" }}
         />
         <Stack.Screen
           name="ProfileFields"
@@ -69,6 +71,11 @@ export default function Navigation() {
           name="NoInternet"
           component={NoInternet}
           options={{ headerShown: false, headerTitleAlign: "center" }}
+        />
+        <Stack.Screen
+          name="NoLocation"
+          component={NoLocation}
+          options={optionsHeader}
         />
         <Stack.Screen
           name="LostPet"

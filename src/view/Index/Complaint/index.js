@@ -14,37 +14,16 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 
 
-function Complaint({ navigation }) {
+function Complaint({route,navigation}) {
 
-   
-    const [selectedImage, setSelectedImage] = useState([]);
-
-    let openImagePickerAsync = async () => {
-        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+   const { coordinate,type } = route.params;
     
-        if (permissionResult.granted === false) {
-          alert("É necessário dar permissão para acessar a galeria");
-          return;
-        }
-    
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
-
-        if (pickerResult.cancelled === true) {
-            return;
-        }
-        const count="localUri"+selectedImage.length;
-
-        setSelectedImage((selectedImage)=>[...selectedImage,{ count: pickerResult.uri }]);
-        console.log(selectedImage.length);
-
-      }
-    const [selectedValue, setSelectedValue] = useState("java");
     return(
       
             <View style={ styles.container }>
               <Header navigation={navigation} title="Denúncias" />
               <ScrollView >
-                <EventBody color="red"/>
+                <EventBody color="red"  coordinate={coordinate} type={type} />
               </ScrollView>        
            </View>         
     );

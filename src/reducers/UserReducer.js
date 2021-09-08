@@ -1,6 +1,10 @@
 export const initialState = {
-
-    avatar:''
+     
+     id:'', 
+     avatar:'',
+     name:"",
+     email:"",
+     phone:"",
 
 };
 
@@ -12,6 +16,20 @@ export const UserReducer = (state,action) => {
 
                 case 'setAvatar':
                     return { ...state, avatar: action.payload.avatar };
+                break;
+
+                case 'setName':
+                    return { ...state, name: action.payload.name };
+                break; 
+                case 'setEmail':
+                    return { ...state, email: action.payload.email };
+                break;
+                case 'setPhone':
+                    return { ...state, phone: action.payload.phone };
+                break;   
+
+                case 'setID':
+                    return { ...state, id: action.payload.id };
                 break;
 
                 default:

@@ -4,11 +4,12 @@ import { View,KeyboardAvoidingView,Image
 import  styles from './styles'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, SocialIcon  } from 'react-native-elements';
-import Api  from '../../Api';
-import { AsyncStorage } from 'react-native';
+import Api  from '../Apis/SignIn-SignUp/Api';
+import  {AsyncStorage}  from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 //import { UserContext } from '../../context/UserContext';
 import {useNetInfo} from "@react-native-community/netinfo";
+import {UserContext} from '../../context/UserContext';
 
 
 function SignIn({navigation}){
@@ -20,15 +21,19 @@ function SignIn({navigation}){
             navigation.navigate("NoInternet");
         }
 
+		
+		const {dispatch:userDispatch} =useContext(UserContext);
+
 		const [hidePass,  setHidePass]     		= useState(true);
 		const [emailField, setEmailField]  		= useState('');
 		const [passwordField, setPasswordField] = useState('');
 		const [items, setItems] = useState([]);
   		const [isLoading, setLoading] = useState(false);
 		
+
 		const resetAction = StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Main' })],
+            actions: [NavigationActions.navigate({ routeName: 'Index' })],
         });
 
 
@@ -39,31 +44,62 @@ function SignIn({navigation}){
 		};
 		const handleLoginButtonClick = async() =>{
 
-			  navigation.navigate('Index');
 			  if( emailField != '' && passwordField != '' ){
 
 				
-					//navigation.navigate('Loading');
-					//let json= await Api.signIn(emailField,passwordField);
-			
+					let json= await Api.signIn(emailField,passwordField);
+					
 					if( json.status ){
 						
-						//await AsyncStorage.setItem('token',json.msg);
-						
+						await AsyncStorage.setItem('token',json.msg.remember_token);
+
 						userDispatch({
-							type: 'setAvatar',
+
+							type:'setName',
 							payload:{
-								avatar:json.msg
-							}
+								name:json.msg.name
+							},
+														
+						});
+						userDispatch({
+
+							type:'setEmail',
+							payload:{
+								email:json.msg.email
+							},
+							
+							
 						});
 
-						navigation.dispatch(resetAction);
+						userDispatch({
+
+							type:'setPhone',
+							payload:{
+								phone:json.msg.phone
+							},
+							
+							
+						});
+
+						userDispatch({
+
+							type:'setID',
+							payload:{
+								id:json.msg.id
+							},
+							
+							
+						});
+
+						
+			  			navigation.navigate('Index');
+						//navigation.dispatch(resetAction);
 					 
 						
 					}else{
 
 						alert(json.msg);
-						//navigation.navigate('SignIn'); 
+						navigation.navigate('SignIn'); 
 
 					}
 

@@ -4,8 +4,7 @@ import { View,KeyboardAvoidingView,Image
 import  styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, SocialIcon  } from 'react-native-elements';
-import { useNavigation } from 'react-native';
-import Api  from '../../Api';
+import Api  from '../Apis/SignIn-SignUp/Api';
 
 function SignUp({navigation}){
         
@@ -26,12 +25,12 @@ function SignUp({navigation}){
 					alert("A confirmação da senha está incorreta!");
 
 				}else{
-					let res=true;
-					//let res = await Api.signUp(nameField,emailField,phoneField,passwordField);
+					
+					let res = await Api.signUp(nameField,emailField,phoneField,passwordField);
 					if( res.status ){
 						
 						alert(res.msg);
-						navigation.navigate('Main');
+						//navigation.navigate('Index');
 
 					}else{
 						

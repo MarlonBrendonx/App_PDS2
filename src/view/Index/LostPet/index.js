@@ -1,25 +1,36 @@
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { Image,View,Button,Text,TouchableOpacity, TextInput } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import styles from "./styles";
 import Modal from 'react-native-modal';
 import { Entypo } from "@expo/vector-icons";
 import { ScrollView } from 'react-native';
-import Header from "../../../components/Header";    
-import Sv from '../../../assets/avatar.jpg';          // SVG File
+import Header from "../../../components/Header";
 import { SvgUri } from 'react-native-svg';
 import { BackgroundImage } from 'react-native-elements/dist/config';
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
+import {UserContext} from "../../../context/UserContext";
+import Api from "../../Apis/Map/Api";
 
 
-
-function LostPet({ navigation }) {
+function LostPet({ route,navigation }) {
 
    
     const [selectedImage, setSelectedImage] = useState([]);
 
+    const [status, setSelectedValue] = useState(null);
+    const { coordinate,type }= route.params;
+    const [information,setInformation] = useState(null);
+    const [photos,setPhotos] = useState(null);
+    const [animal_id,setAnimal_ID] = useState(null);
+
+
+    const { state:person }=useContext(UserContext);
+
+  
     let openImagePickerAsync = async () => {
+
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
         if (permissionResult.granted === false) {
@@ -35,10 +46,48 @@ function LostPet({ navigation }) {
         const count="localUri"+selectedImage.length;
 
         setSelectedImage((selectedImage)=>[...selectedImage,{ count: pickerResult.uri }]);
-        console.log(selectedImage.length);
+     
 
-      }
-    const [selectedValue, setSelectedValue] = useState("java");
+    }
+    
+    const handleRegisterButtonClick = async() =>{
+
+        setAnimal_ID(1);
+      
+   
+        if( animal_id != '' && status != null && information != '' && coordinate != null  && person.id != '' ){
+
+            
+            let json = await Api.registerEvent(
+
+                type,
+                status,
+                coordinate.latitude,
+                coordinate.longitude,
+                information,
+                1,
+                person.id
+                
+            );
+            
+            if( json.status ){
+                
+                alert("Evento cadastrado!");
+
+            }else{
+
+                alert("Houve algum erro!");
+            }
+            
+        }else{
+
+            alert("[*] Campos vazios!");
+        }
+
+    }
+
+
+
     return(
       
             <View style={ styles.container }>
@@ -63,10 +112,10 @@ function LostPet({ navigation }) {
                             <View style={ styles.containerOptions }>
                                 <Text style={ styles.txtOption }>Infome o status</Text>
                                 <Picker
-                                    selectedValue={selectedValue}
+                                    selectedValue={status}
                                     style={ styles.pickerField }
                                     onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                                        
+                                   
                                     >
                                     <Picker.Item color="red" label="Não Resolvido" value="Não Resolvido" />
                                     <Picker.Item color="green" label="Resolvido" value="Resolvido" />
@@ -83,6 +132,7 @@ function LostPet({ navigation }) {
                                     placeholderTextColor="grey"
                                     numberOfLines={10}
                                     multiline={true}
+                                    onChangeText={t=>setInformation(t)}
                                     />
                             </View>
     
@@ -113,7 +163,7 @@ function LostPet({ navigation }) {
                                 </View>
                              </View>
                              <View style={{ width:'95%',paddingTop:10  }}>
-                                <TouchableOpacity style={ styles.btnAddEvent }  >
+                                <TouchableOpacity style={ styles.btnAddEvent } onPress={handleRegisterButtonClick}  >
                                     <Text style={{ color:'white' }}>Adicionar evento</Text> 
                                     <Image style={ styles.iconButtonsubmit } source={require("../../../assets/login/paw.png")} />
                                 </TouchableOpacity>

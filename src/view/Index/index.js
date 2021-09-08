@@ -1,5 +1,6 @@
-import React from "react";
+import React,{ useContext,useEffect,useState } from "react";
 import { View, Image,ImageBackground, Alert, Text,Button } from "react-native";
+import {UserContext} from "../../context/UserContext";
 
 import { AntDesign,Ionicons } from "@expo/vector-icons";
 
@@ -23,6 +24,13 @@ import iconprofile from "../..//assets/drawer/person.png";
 const Drawer = createDrawerNavigator();
 
 const HeaderDrawer = () => {
+  
+  const [user,setUser] = useState({});
+  
+  const { state:person }=useContext(UserContext);
+
+  const name=person.name.split(" ");
+  
   return (
     
     <View style={styles.drawer_header}>
@@ -32,11 +40,11 @@ const HeaderDrawer = () => {
         >
       <View style={styles.user}>
         <ProfileUser />
-        <Text style={{  color:'#FFF',fontWeight:'bold' }}>Olá Marlon</Text>
+        <Text style={{  color:'#FFF',fontWeight:'bold' }}>Olá {name[0]}</Text>
       </View>
       
       <View style={styles.viewEmail}>
-        <Text style={styles.text}>marlonbrendo2013@gmail.com</Text>
+        <Text style={styles.text}>{person.email}</Text>
       </View>
       
       </ImageBackground>
@@ -56,8 +64,6 @@ const FooterDrawer = () => {
 
 const DrawerContent = ({ navigation }) => {
   const listMenuDrawer = [
-
-
 
     {
       id: 1,
@@ -122,8 +128,9 @@ const optionsHeader = () => ({
    backgroundColor: "#B33BF6",
    elevation: 0,
    
-  }
+  },
 
+  headerTintColor: '#fff',
 });
 
 

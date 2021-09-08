@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect,useContext  } from 'react';
 import { Image,View,Button,Text,TouchableOpacity, TextInput } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import styles from "./styles";
@@ -8,14 +8,54 @@ import { ScrollView } from 'react-native';
 import { BackgroundImage } from 'react-native-elements/dist/config';
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
-
+import {UserContext} from "../../context/UserContext";
+import Api from '../../view/Apis/Map/Api';
 
 function EventBody(props) {
 
    
     const [selectedImage, setSelectedImage] = useState([]);
+    const [information,setInformation] = useState(null);
+    const { state:person }=useContext(UserContext);
+  
+
+     const handleRegisterButtonClick = async() =>{
+       
+        if(  information != '' && props.coordinate != null  && person.id != '' ){
+
+            
+            let json = await Api.registerEvent(
+
+              props.type,
+              null,
+              props.coordinate.latitude,
+              props.coordinate.longitude,
+              information,
+              null,
+              person.id
+              
+          );
+          
+          if( json.status ){
+              
+              alert("Evento cadastrado!");
+
+          }else{
+
+              alert("Houve algum erro!");
+          }
+          
+          }else{
+
+
+              alert("[*] Campos vazios!");
+
+          }
+
+        }
 
     let openImagePickerAsync = async () => {
+
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
         if (permissionResult.granted === false) {
@@ -34,7 +74,7 @@ function EventBody(props) {
         console.log(selectedImage.length);
 
       }
-    const [selectedValue, setSelectedValue] = useState("java");
+  
     return(
   
               <BackgroundImage source={ require("../../assets/LostPet/walpaper2.png") } style={ styles(props).wlpBackground }>
@@ -52,6 +92,8 @@ function EventBody(props) {
                       placeholderTextColor="grey"
                       numberOfLines={10}
                       multiline={true}
+                      onChangeText={t=>setInformation(t)}
+                      
                     />
                     <TouchableOpacity style={ styles(props).btnAddPhoto } onPress={openImagePickerAsync} >
                       <Image 
@@ -75,12 +117,10 @@ function EventBody(props) {
                                           
                       </ScrollView>  
                     </View>
-                    
-                      <TouchableOpacity style={ styles(props).btnAddEvent }  >
+                      <TouchableOpacity style={ styles(props).btnAddEvent } onPress={handleRegisterButtonClick} >
                         <Text style={{ color:'white' }}>Adicionar evento</Text> 
                         <Image style={ styles(props).iconButtonsubmit } source={require("../../assets/login/paw.png")} />
                       </TouchableOpacity>
-                      
                   </View>
                 </View>
               </BackgroundImage>

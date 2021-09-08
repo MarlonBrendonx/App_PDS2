@@ -1,8 +1,8 @@
 import React, { useState, useEffect,useRef } from 'react';
-import { Plataform } from 'react-native';
+import { Alert, Plataform } from 'react-native';
 import  MapView,{ Marker,Callout }  from 'react-native-maps';
 import { Image,View,Button,Text,TextInput,TouchableOpacity, Touchable } from 'react-native';
-import { requestPermissionsAsync, getCurrentPositionAsync, requestForegroundPermissionsAsync } from 'expo-location';
+import { requestPermissionsAsync,getLastKnownPositionAsync, getCurrentPositionAsync, requestForegroundPermissionsAsync } from 'expo-location';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import  styles from './styles';
 import { Avatar, Badge, withBadge } from 'react-native-elements'
@@ -10,9 +10,11 @@ import { Fontisto } from '@expo/vector-icons';
 import Filters from "../FiltersMain";
 import Notification  from "../Notifications";
 import ModalEvents   from '../ModalEvents';
+import LoadIcon from "../../../components/LoadIcon";
 import CalloutMap from "../../../components/Callouts/CalloutLostPet";
 import CalloutMap_2 from '../../../components/Callouts/CalloutCommunityHouse';
 import CalloutMap_3 from '../../../components/Callouts/CalloutComplaint';
+import Api  from '../../Apis/Map/Api';
 
 function MapScreen({ navigation }) {
 
@@ -21,6 +23,11 @@ function MapScreen({ navigation }) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalNotificationVisible, setModalNotificationVisible] = useState(false);
     const [isModalEventsVisible,setModalEventsVisible] = useState(false);
+    const [coordsMarker,setCoordsMarker] = useState([]);
+    const [listevents,setListEvents] = useState([]);
+    const [loading,setLoading] = useState(false);
+    const [state,setState] = useState(false);
+
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -28,16 +35,21 @@ function MapScreen({ navigation }) {
 
     const toggleModalNotification = () => {
         setModalNotificationVisible(!isModalNotificationVisible);
+        setLoading(false);
     };
 
-    const toggleModalEvents = () => {
+    const toggleModalEvents = (event) => {
+        //console.log(event.nativeEvent.coordinate);
+        //const t=event.nativeEvent.coordinate;
+        //qconsole.log(t.longitude);
+        if( event != null )
+            setCoordsMarker(event.nativeEvent.coordinate);
+
+       
         setModalEventsVisible(!isModalEventsVisible);
     };
 
-    const ClickMap = (region) => {
-        
-    }
-
+ 
     const handleLocationFinder = async () =>{
 
         const { granted } = await requestForegroundPermissionsAsync();
@@ -46,7 +58,9 @@ function MapScreen({ navigation }) {
                     const { coords } = await getCurrentPositionAsync({
                         enableHighAccuracy: true,
                     });
-
+                    
+                    
+                    setLoading(true);
                     const { latitude, longitude  } = coords;
                     setCurrentRegion({
 
@@ -56,10 +70,11 @@ function MapScreen({ navigation }) {
                         longitudeDelta:0.04,
 
                     })
+
+
         }
 
-        console.log(currentRegion);
-
+  
     }
 
 
@@ -68,13 +83,18 @@ function MapScreen({ navigation }) {
 
         async function loadInitialPosition(){
 
+            try{
                 const { granted } = await requestForegroundPermissionsAsync();
 
                 if( granted ){
-                    const { coords } = await getCurrentPositionAsync({
+
+                
+                    setLoading(true);
+
+                    const { coords } = await getLastKnownPositionAsync({
                         enableHighAccuracy: true,
                     });
-
+                        
                     const { latitude, longitude  } = coords;
                     setCurrentRegion({
 
@@ -84,30 +104,63 @@ function MapScreen({ navigation }) {
                         longitudeDelta:0.04,
 
                     })
+                     
                 }
-
+            }catch( ex ){  
+                alert("Nao foi possivel pega a localização\n Ative a localização no seu dispositivo"); 
+            }
         }
         
-        
-
         loadInitialPosition();
+        getEvents();
 
     }, []);
-    
-    
-    
-    
+   
+   
+
+    const getEvents = async ()=>{
+        
+        setLoading(true);
+        setListEvents([]);
+
+        let res= await Api.getEvents();
+       
+        if( res.status ){
+            
+            setListEvents(res.msg.data);
+            
+        }else{
+
+            alert("Erro ao buscar os eventos.");
+        }
+
+        setLoading(false);
+        setState(true);
+    }
+
     return (
         <>
-        <ModalEvents isVisible={isModalEventsVisible} onClose={()=> toggleModalEvents()} navigation={navigation} />
+         
+        <ModalEvents isVisible={isModalEventsVisible}  onClose={()=> toggleModalEvents()} navigation={navigation}  coordinate={coordsMarker === null ? null: coordsMarker} />
         <Notification isVisible={isModalNotificationVisible} onClose={()=> toggleModalNotification()}/>
+       
         <MapView initialRegion={currentRegion} style={ styles.map } 
-        onPress={toggleModalEvents}
+        onPress={toggleModalEvents} showsMyLocationButton={false} showsUserLocation={true} 
         >
-        <CalloutMap 	type=""  color="#FAAB64" coordinate={{ latitude:-18.727707,longitude: -47.500065 }} />
-				<CalloutMap_2 type=""  color="#5cc5c0" coordinate={{ latitude:-18.724089,longitude:  -47.490387 }} />
-				<CalloutMap_3 type=""  color="red" coordinate={{ latitude:-18.735917,longitude:  -47.486853 }} />
+          
+     
+        {state && listevents.map((item, k)=>{
+            
+           if( item.type === 0 )
+                return ( <CalloutMap  key={k}  data={item} color="#FAAB64" /> );
+            else if( item.type === 1 )
+                return ( <CalloutMap_2  key={k}  data={item} color="#5cc5c0" /> );
+            else 
+                return ( <CalloutMap_3  key={k}  data={item} color="red" /> );
+        })}   
+        
         </MapView>
+        {loading && <LoadIcon/> }
         <View style={styles.topSection}>
 
           <TouchableOpacity style={styles.btnBell} onPress={toggleModalNotification}>
@@ -148,7 +201,7 @@ function MapScreen({ navigation }) {
         </View>
      
         <Filters isVisible={isModalVisible} onClose={()=> toggleModal()}/>
-            
+       
 
         </View>
     </>

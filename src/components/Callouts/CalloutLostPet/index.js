@@ -11,10 +11,10 @@ import  MapView,{ Marker,Callout }  from 'react-native-maps';
 
 function CalloutMap(props) {
 
-   
+
     return(
 
-      <Marker  coordinate={ props.coordinate } >
+      <Marker  coordinate={{ latitude:parseFloat(props.data.latitude),longitude: parseFloat(props.data.longitude) }} >
       <Image style={styles(props).avatar} source={require("../../../assets/main/event_1.png")}/>
           <Callout tooltip={true}  onPress={()=>{
               //
@@ -28,7 +28,7 @@ function CalloutMap(props) {
               <View style={ styles(props).body }>
                 <Text style={styles(props).devbio}>Nome: Bob</Text>
                 <Text style={styles(props).devtest}>Raça: Vira-Lata</Text>
-                <Text style={styles(props).status}>Status: Não resolvido</Text>
+                <Text style={styles(props).status}>Status: {props.data.status }</Text>
                 <View style={ styles(props).containerimgs }>
                 </View>
               </View>

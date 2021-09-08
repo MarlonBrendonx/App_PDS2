@@ -4,12 +4,21 @@ import styles from "./styles";
 
 const Button = (props) => {
   
- 
-
+  
   return (
     <>
         <View style={{  width:'100%',height:55,flexDirection:'row',alignItems:'center' }}>
-            <TouchableOpacity style={ styles(props).containerElement }  onPress={ ()=>{ props.onClose(),props.navigation.navigate(props.screen) } }>
+            <TouchableOpacity 
+
+              style={ styles(props).containerElement }  
+              onPress={ ()=>{ 
+                props.onClose(),props.navigation.navigate(props.screen,
+                  {
+                    coordinate:props.coordinate,
+                    type:props.type
+                  }) 
+              } }
+            >
             <View >
                
             </View>

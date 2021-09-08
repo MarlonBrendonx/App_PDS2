@@ -1,12 +1,17 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState,useEffect,useContext} from 'react';
 import { View,Button,Image,TouchableOpacity} from 'react-native';
 import styles from './styles';
 import { Input,Text  } from 'react-native-elements';
 import { AntDesign,Ionicons } from "@expo/vector-icons";
 import  Header  from "../../../components/Header";
+import {UserContext} from '../../../context/UserContext';
+
 
 function Profile({navigation}){
 
+        const[name,setName] = useState(null);
+        const { state:person }=useContext(UserContext);
+  
         return (
             <View style={ styles.container }>
             
@@ -18,7 +23,9 @@ function Profile({navigation}){
 
                      onPress={ () => navigation.navigate("ProfileFields",{
                         title:'Alterar Nome',
-                        type:'Name',
+                        type:'setName',
+                        field:'name',
+                        plcholder:person.name
 
                      }) }>
 
@@ -36,7 +43,9 @@ function Profile({navigation}){
 
                      onPress={ () => navigation.navigate("ProfileFields",{
                         title:'Alterar E-mail',
-                        type:'E-mail',
+                        type:'setEmail',
+                        field:'email',
+                        plcholder:person.email
 
                      }) }>
 
@@ -54,7 +63,10 @@ function Profile({navigation}){
 
                      onPress={ () => navigation.navigate("ProfileFields",{
                         title:'Alterar Telefone',
-                        type:'Phone',
+                        type:'setPhone',
+                        field:'phone',
+                        plcholder:person.phone
+                        
 
                      }) }>
                         
