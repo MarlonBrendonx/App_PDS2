@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor:'#B33BF6'
       },
 
       linearGradient: {

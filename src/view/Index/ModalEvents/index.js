@@ -11,7 +11,7 @@ import iconevent_3 from "../../../assets/main/event_3.png";
 import Navigation from '../../../../Navigation';
 
 
-function ModalEvents({ isVisible, onClose,navigation,coordinate }) {
+function ModalEvents({ StateInsertList,isVisible, onClose,navigation,coordinate }) {
    
     return(
       <>
@@ -25,9 +25,47 @@ function ModalEvents({ isVisible, onClose,navigation,coordinate }) {
                 </View>
                 
                 <View style={ styles.modalBody }>
-                    <ContainerEvent title="Animal Perdido"  iconevent={ iconevent_1 } screen="LostPet" color="#faab64"  onClose={onClose} navigation={navigation} coordinate={coordinate} type="0"/>
-                    <ContainerEvent title="Casinha comunitária" iconevent={ iconevent_2 } screen="CommunityHouse" color="#5cc5c0"  onClose={onClose} navigation={navigation} coordinate={coordinate} type="1"  />
-                    <ContainerEvent title="Denúncia" iconevent={ iconevent_3 } screen="Complaint" color="red" onClose={onClose} navigation={navigation} coordinate={coordinate} type="2" />
+                    <ContainerEvent 
+                        title="Animal Perdido"  
+                        iconevent={ iconevent_1 } 
+                        screen="LostPet" 
+                        color="#faab64"  
+                        onClose={onClose} 
+                        navigation={navigation}
+                        coordinate={coordinate} 
+                        type="0" 
+                        StateInsertList={StateInsertList}
+                        width={80}
+                        height={80}
+                        left={10}
+                    />
+                     
+                    <ContainerEvent 
+                        title="Casinha comunitária"
+                        iconevent={ iconevent_2 } 
+                        screen="CommunityHouse"
+                        color="#5cc5c0"
+                        onClose={onClose}
+                        navigation={navigation}
+                        coordinate={coordinate}
+                        type="1"
+                        StateInsertList={StateInsertList} 
+                        width={70}
+                        height={80}
+                    />
+                    <ContainerEvent
+                        title="Denúncia"
+                        iconevent={ iconevent_3 }
+                        screen="Complaint"
+                        color="red"
+                        onClose={onClose}
+                        navigation={navigation}
+                        coordinate={coordinate}
+                        type="2"
+                        StateInsertList={StateInsertList} 
+                        width={120}
+                        height={120}
+                    />
                 </View>
                
             </View>

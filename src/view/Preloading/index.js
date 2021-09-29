@@ -1,22 +1,20 @@
 import React, { useContext, useEffect } from 'react';
 import { StyleSheet,Image,View,Text,TextInput,TouchableOpacity,ImageBackground, ActivityIndicator } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import  styles from './style';
-import {LinearGradient} from 'expo-linear-gradient';
-import AsyncStorage from '@react-native-community/async-storage';
-import { useNavigation } from 'react-native';
+import  {AsyncStorage}  from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { UserContext } from '../../context/UserContext';
-import Api from '../../Api.js';
+import Api from "../../view/Apis/SignIn-SignUp/Api";
 
 function Preload({ navigation }){
 
-       const{ dispatch: userDispatch } = useContext(UserContext);
+      
        const resetAction = StackActions.reset({
         index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'Main' })],
+        actions: [NavigationActions.navigate({ routeName: 'Index' })],
         });
 
+       const {dispatch:userDispatch} =useContext(UserContext);
        //Assim que a tela abrir ,checar o token de login
         useEffect(()=>{
 
@@ -32,9 +30,47 @@ function Preload({ navigation }){
                     if( json.status ){
 
                         await AsyncStorage.setItem('token',json.msg['remember_token']);
-						
-						navigation.dispatch(resetAction);
 
+                        userDispatch({
+
+							type:'setName',
+							payload:{
+								name:json.msg.name
+							},
+														
+						});
+						userDispatch({
+
+							type:'setEmail',
+							payload:{
+								email:json.msg.email
+							},
+							
+							
+						});
+
+						userDispatch({
+
+							type:'setPhone',
+							payload:{
+								phone:json.msg.phone
+							},
+							
+							
+						});
+
+						userDispatch({
+
+							type:'setID',
+							payload:{
+								id:json.msg.id
+							},
+							
+							
+						});
+						
+						navigation.navigate("Index");
+                        
                     }else{
 
                         navigation.navigate('SignIn');
@@ -56,24 +92,12 @@ function Preload({ navigation }){
         return (
             
             <View style={ styles.container }>
-                
-                
-                    <LinearGradient
-
-                                colors={["#FF00DB","#B33BF6"]}
-                                start={{x: 2, y: 1}} 
-                                end={{x: 1, y: 1}}
-                                style={styles.linearGradient}
-                    >
-
+            
                     <Image
                         style={ styles.logo }
                         source={require('../../assets/run.gif')}
                     />
                     
-                   
-                    </LinearGradient>
-      
                 
             </View>
 

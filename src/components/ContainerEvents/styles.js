@@ -7,9 +7,6 @@ const styles = (props) => StyleSheet.create({
 
         width:'19%',
         height:'100%',
-        borderWidth:2,
-        borderColor:props.color,
-        borderRadius:30,
         alignItems:'center',
         justifyContent:'center',
     
@@ -22,15 +19,19 @@ const styles = (props) => StyleSheet.create({
         
         
     },
-    icon:{
-
-       
-    },
     ContainerEvents:{
 
         height:110,
         width:110,
     
+    },
+    icon:{
+
+        height:props.height,
+        width:props.width,
+        marginTop:10,
+        left:props.left ? 10 : 0
+
     }
   
 });

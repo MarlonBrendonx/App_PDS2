@@ -4,8 +4,8 @@ const styles = (props) => StyleSheet.create({
     callout:{
         
         position:'relative',
-        width:260,
-        height:300,
+        width:300,
+        height:210,
         borderRadius:20,
         backgroundColor:'#FFF'
     },
@@ -24,15 +24,14 @@ const styles = (props) => StyleSheet.create({
     devtest:{
         marginTop:7
     },
-    status:{
-        marginTop:7,
-    },
+    
     avatar:{
 
+        marginTop:10,
         width:90,
-        height:100,
-        
-       
+        height:90,
+        borderRadius:30,
+        marginRight:20
     },
     headercallout:{
 
@@ -50,15 +49,19 @@ const styles = (props) => StyleSheet.create({
         paddingLeft:10
 
     },
-    containerimgs:{
+  
+    btnMore:{
 
-        width:'95%',
-        height:'60%',
-        marginTop:10,
-        borderTopWidth:1,
-        borderTopColor:props.color
+        width:'10%',
+        height:30,
+        alignSelf:'center',
+        marginTop:20,
+        borderRadius:20,
+        right:0,
+        alignSelf:'flex-end'
 
-
+        
+        
     }
 });
 export default styles;

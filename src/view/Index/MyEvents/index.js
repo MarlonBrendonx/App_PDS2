@@ -1,21 +1,51 @@
 import React, { useState, useEffect,useRef } from 'react';
-import { Image,View,Button,Text,TouchableOpacity, TextInput } from 'react-native';
+import { Image,View,ScrollView,TouchableOpacity, TextInput } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import styles from "./styles";
 import Header from '../../../components/Header';
-import Modal from 'react-native-modal';
-import { Entypo } from "@expo/vector-icons";
-import { ScrollView } from 'react-native';  
-import { BackgroundImage } from 'react-native-elements/dist/config';
-import { Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MyEventsContainer from '../../../components/MyEvents';
-import MyEventsCommunity from '../../../components/MyEvents/CommunityHose';
-import MyEventsComplaint from '../../../components/MyEvents/Complaint';
+import Api from "../../Apis/Map/Api";
+import SwipeList_LostPet from "../../../components/SwipeListEvents/LostPet/swipe_value_based_ui";
+import SwipeList_CommunityHouse from "../../../components/SwipeListEvents/CommunityHouse/swipe_value_based_ui";
+import SwipeList_Complaint from "../../../components/SwipeListEvents/Complaint/swipe_value_based_ui";
+import Loading from '../../../components/LoadingEvents';
+
+//{loading && <Loading/> }
 
 function MyEvents({navigation}) {
- 
+
+    const [listevents,setListEvents] = useState([]);
+    const [loading,setLoading] = useState(false);
+    const [state,setState] = useState(false);
+
+    useEffect( ()=>{
+        
+        getEvents();
+
+    }, []);
+
+    const getEvents = async ()=>{
+        
+        setLoading(true);
+        setListEvents([]);
+
+        let res= await Api.getEvents();
+       
+        if( res.status ){
+            
+            setListEvents(res.msg.data);
+            
+        }else{
+
+            alert("Erro ao buscar os eventos.");
+        }
+
+        setLoading(false);
+        setState(true);
+    }
+
+    
+
     return(
         
         <View style={ styles.container }>
@@ -37,14 +67,25 @@ function MyEvents({navigation}) {
                 </TouchableOpacity>
             </View>
             </View>
+            {loading && <Loading/> }
             <View style={ styles.list }>
-             
-                <MyEventsContainer />
-                <MyEventsCommunity />
-                <MyEventsComplaint />
-             
+               
+               <ScrollView vertical={true} >
+                { state && listevents.map((item, k)=>{
+                    
+                    if( item.type === 0 )
+                        return ( <SwipeList_LostPet key={k} data={item} color="#faab64" /> );
+                    else if( item.type === 1 )
+                        return ( <SwipeList_CommunityHouse key={k} data={item} color="#5cc5c0" /> );
+                    else 
+                        return ( <SwipeList_Complaint key={k} data={item} color="#ff545a" /> );
+                    
+                        
+                })} 
+               </ScrollView>
             </View>    
-             
+            
+
             </View>
         </View>
               

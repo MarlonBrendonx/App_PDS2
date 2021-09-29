@@ -20,60 +20,109 @@ function LostPet({ route,navigation }) {
     const [selectedImage, setSelectedImage] = useState([]);
 
     const [status, setSelectedValue] = useState(null);
-    const { coordinate,type }= route.params;
+    const { coordinate,type,StateInsertList }= route.params;
     const [information,setInformation] = useState(null);
     const [photos,setPhotos] = useState(null);
     const [animal_id,setAnimal_ID] = useState(null);
+    const [stateError,setStateError] = useState(false);
 
 
     const { state:person }=useContext(UserContext);
 
-  
+    const uploadImages = async(form)=>{
+
+        let json = await Api.UploadImageEvents(
+            form,
+        );
+
+        return json.status;
+   }
+
     let openImagePickerAsync = async () => {
 
-        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            aspect: [4, 3],
+            quality: 1,
+          });
+          
+          const count="localUri"+selectedImage.length;
+  
+          if ( ! result.cancelled ) {
+  
+  
+            const data = new FormData();
+  
+            setSelectedImage((selectedImage)=>[...selectedImage,{ count: result.uri }]);
+  
+          
+          }
+      
     
-        if (permissionResult.granted === false) {
-          alert("É necessário dar permissão para acessar a galeria");
-          return;
-        }
-    
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
-
-        if (pickerResult.cancelled === true) {
-            return;
-        }
-        const count="localUri"+selectedImage.length;
-
-        setSelectedImage((selectedImage)=>[...selectedImage,{ count: pickerResult.uri }]);
-     
-
     }
     
     const handleRegisterButtonClick = async() =>{
 
-        setAnimal_ID(1);
+        setAnimal_ID(2);
       
    
-        if( animal_id != '' && status != null && information != '' && coordinate != null  && person.id != '' ){
+        if( selectedImage.length && animal_id != null && status != null && information != '' && coordinate != null  && person.id != null ){
 
-            
+            console.log(animal_id,status,information,coordinate,person.id);
             let json = await Api.registerEvent(
 
                 type,
                 status,
+                "images/" + person.id,
                 coordinate.latitude,
                 coordinate.longitude,
                 information,
-                1,
+                animal_id,
                 person.id
                 
             );
             
             if( json.status ){
+              
+                StateInsertList();
                 
-                alert("Evento cadastrado!");
+                const formData =new FormData();
+          
+                  Object.keys(selectedImage).map(function(key,value) {
+                  
+                      formData.append('image', {
+                          uri: selectedImage[value].count,
+                          type: "image/jpeg",
+                          name: selectedImage[value].count
+                       }),
+        
+                       formData.append('id_user',person.id)
+                       formData.append('id_event',json.msg) 
+          
+                      const  status= uploadImages(formData);
+        
+                      if( ! status ){
+                         setStateError(true);
+                         return;
+                      }
+        
+                  });
+                
+        
+                  if( stateError ){
 
+                      alert("Oops! Não conseguimos inserir as imagens :(\n");
+                      
+                  
+                  }else if( !stateError ){
+                     
+                      alert("Evento cadastrado com sucesso!\n");
+                      navigation.goBack();
+
+                  }
+                  
+                  setStateError(false);
+                  
             }else{
 
                 alert("Houve algum erro!");

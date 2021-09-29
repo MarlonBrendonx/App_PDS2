@@ -15,12 +15,13 @@ const Button = (props) => {
                 props.onClose(),props.navigation.navigate(props.screen,
                   {
                     coordinate:props.coordinate,
-                    type:props.type
+                    type:props.type,
+                    StateInsertList:props.StateInsertList
                   }) 
               } }
             >
             <View >
-               
+              <Image source={props.iconevent} style={  styles(props).icon } />  
             </View>
             </TouchableOpacity>
             <Text style={{ color:'white',left:20,fontWeight:'bold' }}>{props.title}</Text>

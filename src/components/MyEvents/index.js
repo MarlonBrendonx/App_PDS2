@@ -8,17 +8,16 @@ const MyEventsContainer = (props) => {
 
 
   return (
-        <View style={ styles(props).containerEvent }>
-                        
-        <Image style={ styles(props).img } source={ require("../../assets/Events/cat.png") } />
-        <View style={ styles(props).data }>
-            <Text style={ styles(props).txt }>Nome: Nina</Text>
-            <Text style={ styles(props).txt }>Raça: Vira-Lata</Text>
-            <Text style={ styles(props).txt }>Status: Não resolvido</Text>
-        </View>
-        <View>
-            <Image style={ styles(props).imgicon } source={ require("../../assets/main/event_1.png") } />
-        </View>
+        <View style={ styles(props).containerEvent }>            
+          <Image style={ styles(props).img } source={ require("../../assets/Events/cat.png") } />
+          <View style={ styles(props).data }>
+              <Text style={ styles(props).txt }>Nome: {props.data.name}</Text>
+              <Text style={ styles(props).txt }>Raça: Vira-Lata</Text>
+              <Text style={ styles(props).txt }>Status: {props.data.status}</Text>
+          </View>
+          <View>
+              <Image style={ styles(props).imgicon } source={ require("../../assets/main/event_1.png") } />
+          </View>
         </View>
   );
 };

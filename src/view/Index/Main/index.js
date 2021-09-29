@@ -1,7 +1,6 @@
 import React, { useState, useEffect,useRef } from 'react';
-import { Alert, Plataform } from 'react-native';
 import  MapView,{ Marker,Callout }  from 'react-native-maps';
-import { Image,View,Button,Text,TextInput,TouchableOpacity, Touchable } from 'react-native';
+import { Image,View,RefreshControl,Text,TextInput,TouchableOpacity, Touchable } from 'react-native';
 import { requestPermissionsAsync,getLastKnownPositionAsync, getCurrentPositionAsync, requestForegroundPermissionsAsync } from 'expo-location';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import  styles from './styles';
@@ -14,6 +13,7 @@ import LoadIcon from "../../../components/LoadIcon";
 import CalloutMap from "../../../components/Callouts/CalloutLostPet";
 import CalloutMap_2 from '../../../components/Callouts/CalloutCommunityHouse';
 import CalloutMap_3 from '../../../components/Callouts/CalloutComplaint';
+
 import Api  from '../../Apis/Map/Api';
 
 function MapScreen({ navigation }) {
@@ -27,7 +27,19 @@ function MapScreen({ navigation }) {
     const [listevents,setListEvents] = useState([]);
     const [loading,setLoading] = useState(false);
     const [state,setState] = useState(false);
+    const [stateInsertList,setStateInsertList] = useState(false);
+    const [stateOptions,setstateOptions] = useState(false);
+    const [option,setOptions]=useState("");
 
+    const setStateInsert = () =>{
+        setStateInsertList(true);
+        console.log(setStateInsert);
+    }
+
+    const setStateOptions = (option) =>{
+        setstateOptions(true);
+        setOptions(option);
+    }
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -78,44 +90,71 @@ function MapScreen({ navigation }) {
     }
 
 
+    async function loadInitialPosition(){
 
+        try{
+            const { granted } = await requestForegroundPermissionsAsync();
+
+            if( granted ){
+
+            
+                setLoading(true);
+
+                const { coords } = await getLastKnownPositionAsync({
+                    enableHighAccuracy: true,
+                });
+                    
+                const { latitude, longitude  } = coords;
+                setCurrentRegion({
+
+                    latitude,
+                    longitude,
+                    latitudeDelta:0.04,
+                    longitudeDelta:0.04,
+
+                })
+                 
+            }
+        }catch( ex ){
+
+            navigation.navigate("NoLocation");
+           //alert("Nao foi possivel pega a localização\n Ative a localização no seu dispositivo"); 
+        }
+    }
     useEffect( ()=>{
 
-        async function loadInitialPosition(){
-
-            try{
-                const { granted } = await requestForegroundPermissionsAsync();
-
-                if( granted ){
-
-                
-                    setLoading(true);
-
-                    const { coords } = await getLastKnownPositionAsync({
-                        enableHighAccuracy: true,
-                    });
-                        
-                    const { latitude, longitude  } = coords;
-                    setCurrentRegion({
-
-                        latitude,
-                        longitude,
-                        latitudeDelta:0.04,
-                        longitudeDelta:0.04,
-
-                    })
-                     
-                }
-            }catch( ex ){  
-                alert("Nao foi possivel pega a localização\n Ative a localização no seu dispositivo"); 
-            }
-        }
-        
         loadInitialPosition();
         getEvents();
 
     }, []);
-   
+
+    useEffect( ()=>{
+
+        if( stateOptions ){
+
+            if( option == 3 ){
+
+                getEvents();
+
+            }else{
+
+                getEventsOptions();
+                setstateOptions(false);
+
+            }
+        }
+
+    }, [stateOptions]);
+    
+    useEffect( ()=>{
+        
+        if( stateInsertList ){
+            getEvents();
+            setStateInsertList(false);
+        }
+
+
+    }, [stateInsertList]);
    
 
     const getEvents = async ()=>{
@@ -138,33 +177,57 @@ function MapScreen({ navigation }) {
         setState(true);
     }
 
+    const getEventsOptions = async ()=>{
+        
+        setLoading(true);
+        setListEvents([]);
+
+        let res= await Api.getEventsOptions(option);
+       
+        if( res.status ){
+            
+            setListEvents(res.msg);
+            
+        }else{
+
+            alert("Erro ao buscar os eventos.");
+        }
+
+        setLoading(false);
+        setState(true);
+     
+    }
+
     return (
         <>
-         
-        <ModalEvents isVisible={isModalEventsVisible}  onClose={()=> toggleModalEvents()} navigation={navigation}  coordinate={coordsMarker === null ? null: coordsMarker} />
+        
+        <ModalEvents StateInsertList={setStateInsert} isVisible={isModalEventsVisible}  onClose={()=> toggleModalEvents()} navigation={navigation}  coordinate={coordsMarker === null ? null: coordsMarker} />
         <Notification isVisible={isModalNotificationVisible} onClose={()=> toggleModalNotification()}/>
        
         <MapView initialRegion={currentRegion} style={ styles.map } 
-        onPress={toggleModalEvents} showsMyLocationButton={false} showsUserLocation={true} 
+            onPress={toggleModalEvents} 
+            showsMyLocationButton={false} 
+            showsUserLocation={true}
+           
         >
           
-     
         {state && listevents.map((item, k)=>{
             
            if( item.type === 0 )
-                return ( <CalloutMap  key={k}  data={item} color="#FAAB64" /> );
+                return ( <CalloutMap  key={k}  data={item}  color="#FAAB64" navigation={navigation}  /> );
             else if( item.type === 1 )
-                return ( <CalloutMap_2  key={k}  data={item} color="#5cc5c0" /> );
-            else 
-                return ( <CalloutMap_3  key={k}  data={item} color="red" /> );
+                return ( <CalloutMap_2  key={k}  data={item}  color="#5cc5c0" navigation={navigation} /> );
+            else if( item.type === 2 )
+                return ( <CalloutMap_3  key={k}  data={item} color="red" navigation={navigation}      /> );
         })}   
         
         </MapView>
         {loading && <LoadIcon/> }
+        
         <View style={styles.topSection}>
 
           <TouchableOpacity style={styles.btnBell} onPress={toggleModalNotification}>
-            <Fontisto name="bell-alt" size={30} color="#858585" />
+            <Fontisto name="bell-alt" size={30} color="#B33BF6" />
           </TouchableOpacity>
           <Badge
             status="error"
@@ -173,8 +236,6 @@ function MapScreen({ navigation }) {
           />  
                 
         </View>
-        
-       
         <View style={styles.locationSection}>
         	<TouchableOpacity style={styles.btnMylocation}  onPress={handleLocationFinder} >
           	<Icon  name="crosshairs" size={20} color="#B33BF6"/>
@@ -200,13 +261,11 @@ function MapScreen({ navigation }) {
 
         </View>
      
-        <Filters isVisible={isModalVisible} onClose={()=> toggleModal()}/>
+        <Filters StateOptions={setStateOptions} isVisible={isModalVisible} onClose={()=> toggleModal()}/>
        
-
         </View>
     </>
     );
   }
 
-// <Button title="Hide modal" onPress={toggleModal} />
 export default MapScreen;

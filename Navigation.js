@@ -11,17 +11,20 @@ import Index from "./src/view/Index";
 import Profile from "./src/view/Index/Profile";
 import ProfileFields from "./src/view/Index/ProfileFields";
 import ProfilePassword from "./src/view/Index/ProfileFields/ProfilePassword";
+import Preloading from "./src/view/Preloading";
 import NoInternet  from "./src/view/NoInternet";
 import LostPet from "./src/view/Index/LostPet";
 import CommunityHouse from "./src/view/Index/CommunityHouse";
 import Complaint from "./src/view/Index/Complaint";
 import MyEvents from "./src/view/Index/MyEvents";
 import NoLocation from "./src/view/NoLocation";
-import SignUpPets from "./src/view/SignUpPets";
-import PetsView from "./src/view/PetsView";
-import Pets from "./src/view/Index/Pets";
-import Donation from "./src/view/Donation";
-import DonationView from "./src/view/Index/DonationView";
+import LostPet_More from "./src/view/Index/SeeMore/LostPetMore";
+import CommunityHouse_More from "./src/view/Index/SeeMore/CommunityHouseMore";
+import Complaint_More from "./src/view/Index/SeeMore/ComplaintMore";
+import {LogBox} from 'react-native';
+
+
+LogBox.ignoreLogs(['Warning: ...']);
 const Stack = createStackNavigator();
 
 const optionsHeader = () => ({
@@ -37,30 +40,22 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="DonationView" component={DonationView} options={optionsHeader} />
-        <Stack.Screen name="Donation" component={Donation} options={optionsHeader} />
-        <Stack.Screen name="SignIn" component={SignIn} options={optionsHeader} />
-        <Stack.Screen name="PetsView" component={PetsView} options={optionsHeader} />
+        <Stack.Screen name="Preloading" component={Preloading} options={optionsHeader} />
+
+        <Stack.Screen
+          name="SignIn"
+          component={SignIn}
+          options={optionsHeader}
+         
+        />    
+
+
         <Stack.Screen
           name="SignUp"
           component={SignUp}
           options={optionsHeader}
          
         />
-       
-        <Stack.Screen
-          name="SignUpPets"
-          component={SignUpPets}
-          options={optionsHeader}
-         
-        />
-         <Stack.Screen
-          name="Pets"
-          component={Pets}
-          options={optionsHeader}
-         
-        />
-        
         <Stack.Screen
           name="RedefinePass"
           component={RedfinePass}
@@ -117,7 +112,22 @@ export default function Navigation() {
           component={MyEvents}
           options={optionsHeader}
         />
-        
+        <Stack.Screen
+          name="LostPet_More"
+          component={LostPet_More}
+          options={optionsHeader}
+        />
+        <Stack.Screen
+          name="CommunityHouse_More"
+          component={CommunityHouse_More}
+          options={optionsHeader}
+        />
+        <Stack.Screen
+          name="Complaint_More"
+          component={Complaint_More}
+          options={optionsHeader}
+        />
+       
         
       </Stack.Navigator>
     </NavigationContainer>

@@ -120,9 +120,9 @@ const styles = StyleSheet.create({
         paddingBottom:10
     },
     list:{
-        top:40,
-        flex:1,
         
+        paddingTop:'15%',
+        paddingBottom:50
     }
 
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { View,Text, Image } from "react-native";
+import { View,Text, Image,TextInput } from "react-native";
 import ImageModal from 'react-native-image-modal';
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,8 +12,17 @@ const MyEventsComplaint = (props) => {
                         
         <Image style={ styles(props).img } source={ require("../../../assets/Events/ICON_denuncia.png") } />
         <View style={ styles(props).data }>
-            <Text style={ styles(props).txt }>Comentários...</Text>
-            <Text style={ styles(props).txt }>Status: Não Solucionado</Text>
+            <TextInput
+               style={ styles(props).txt }
+               underlineColorAndroid="transparent"
+               placeholderTextColor="grey"
+               numberOfLines={10}
+               multiline={true}
+               defaultValue={props.data.information}
+               editable={false} 
+               selectTextOnFocus={true}
+            />
+            
         </View>
         
         </View>

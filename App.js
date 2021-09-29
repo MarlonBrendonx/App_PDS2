@@ -5,6 +5,7 @@ import UserContextProvider from "./src/context/UserContext";
 import Navigation from "./Navigation";
 
 export default function App() {
+  console.disableYellowBox = true;
   return (
     <>
       <UserContextProvider>

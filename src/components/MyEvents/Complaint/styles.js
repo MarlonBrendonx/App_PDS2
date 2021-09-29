@@ -117,6 +117,9 @@ const styles = (props)=> StyleSheet.create({
         paddingLeft:35
     },
     txt:{
+
+        height:100,
+        width:200,
         paddingTop:5,
         paddingBottom:10
     }

@@ -82,7 +82,7 @@ const DrawerContent = ({ navigation }) => {
     {
       id: 3,
       name: "Meus pets",
-      action: "Pets",
+      action: "List",
       icon: <Image source={iconpets} style={{ width:24,height:24 }} />,
     },
     {
@@ -125,12 +125,18 @@ const optionsHeader = () => ({
   
   headerTintColor:'#FFFFFF',
   headerStyle: {
-   backgroundColor: "#B33BF6",
-   elevation: 0,
+   backgroundColor: "#FFF",
+   shadowColor:'#000',
+        shadowOpacity:0.2,
+        shadowOffset:{
+            width:2,
+            height:4,
+        },
+        elevation:10
    
   },
 
-  headerTintColor: '#fff',
+  headerTintColor: '#B33BF6',
 });
 
 

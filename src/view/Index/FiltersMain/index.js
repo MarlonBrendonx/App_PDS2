@@ -8,24 +8,52 @@ import { RadioButton } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
 import Modal from 'react-native-modal';
 
-function Filters({ isVisible, onClose }) {
-    const [checked, setChecked] = React.useState('first');
+function Filters(props) {
 
+    const [checked, setChecked] = React.useState(3);
     const [rangekm, setRange] = React.useState('100');
+    const [country, setCountry] = useState("");
+    const [state, setState] = useState("");
+
+    const getPosition = () =>{
+
+        fetch('http://ip-api.com/json')
+            .then((response) => response.json())
+            .then((response) => {
+                setCountry(response.city);
+                setState(response.region);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+    
+    };
+
+    const saveOptions = () =>{
+        alert("Configurações salvas !");
+        props.StateOptions(checked);
+    }
+
+    useEffect( ()=>{
+
+       
+        getPosition();
+
+    }, []);
 
     return(
       <>
-      <Modal isVisible={isVisible}>
+      <Modal isVisible={props.isVisible}>
         <View style={{flex: 1,backgroundColor:'white',borderRadius:30}}> 
 
             <View style={ styles.header } >
-                <TouchableOpacity onPress={onClose}>
+                <TouchableOpacity onPress={props.onClose}>
                     <Text style={{ color:'red', fontWeight:'bold' }}>Cancelar</Text>
                 </TouchableOpacity>
 
                 <Text style={ styles.headerTitle }>Filtros</Text>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>saveOptions()}>
                     <Text style={{ color:'#B33BF6',fontWeight:'bold' }}>Salvar</Text>
                 </TouchableOpacity>
             </View>
@@ -36,14 +64,14 @@ function Filters({ isVisible, onClose }) {
                     <FontAwesome name="location-arrow" size={20} color="black" style={{ paddingLeft:10 }}/>
                     <Text style={{ fontWeight:'bold',paddingLeft:10 }}>Localização atual:</Text>
                     <TextTicker
-                    style={{ width:100,paddingLeft:5}}
-                    duration={3000}
-                    loop
-                    bounce
-                    repeatSpacer={50}
-                    marqueeDelay={1000}
+                        style={{ width:100,paddingLeft:5}}
+                        duration={3000}
+                        loop
+                        bounce
+                        repeatSpacer={50}
+                        marqueeDelay={1000}
                     >
-                    Monte Carmelo (MG)
+                    {country} - {state}
                     </TextTicker>
                 </TouchableOpacity>
                 
@@ -53,8 +81,8 @@ function Filters({ isVisible, onClose }) {
                         <View style={ styles.RadioButtons }>
                             <RadioButton
                                 value="first"
-                                status={ checked === 'first' ? 'checked' : 'unchecked' }
-                                onPress={() => setChecked('first')}
+                                status={ checked == 1 ? 'checked' : 'unchecked' }
+                                onPress={() => setChecked(1)}
                                 color="#B33BF6"
                                 
                             />
@@ -63,8 +91,8 @@ function Filters({ isVisible, onClose }) {
                         <View style={ styles.RadioButtons }>
                             <RadioButton
                                 value="first"
-                                status={ checked === 'second' ? 'checked' : 'unchecked' }
-                                onPress={() => setChecked('second')}
+                                status={ checked === 0 ? 'checked' : 'unchecked' }
+                                onPress={() => setChecked(0)}
                                 color="#B33BF6"
                             />
                             <Text>Animal Perdido </Text>
@@ -72,8 +100,8 @@ function Filters({ isVisible, onClose }) {
                         <View style={ styles.RadioButtons }>
                             <RadioButton
                                 value="first"
-                                status={ checked === 'third' ? 'checked' : 'unchecked' }
-                                onPress={() => setChecked('third')}
+                                status={ checked === 2 ? 'checked' : 'unchecked' }
+                                onPress={() => setChecked(2)}
                                 color="#B33BF6"
                             />
                             <Text>Denúncias</Text>
@@ -81,8 +109,8 @@ function Filters({ isVisible, onClose }) {
                         <View style={ styles.RadioButtons }>
                             <RadioButton
                                 value="first"
-                                status={ checked === 'fouth' ? 'checked' : 'unchecked' }
-                                onPress={() => setChecked('fouth')}
+                                status={ checked === 3 ? 'checked' : 'unchecked' }
+                                onPress={() => setChecked(3)}
                                 color="#B33BF6"
                             />
                             <Text>Todos</Text>

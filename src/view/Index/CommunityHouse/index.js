@@ -17,15 +17,15 @@ import Api from "../../Apis/Map/Api";
 
 function CommunityHouse({route,navigation }) {
 
-    const { coordinate,type }= route.params;
-   
+    const { coordinate,type,StateInsertList }=route.params;
+    
    
     return(
       
             <View style={ styles.container }>
               <Header navigation={navigation} title="Casinhas comunitárias" />
               <ScrollView >
-                  <EventBody color="#5cc5c0"  coordinate={coordinate}  type={type}/>
+                  <EventBody color="#5cc5c0"  coordinate={coordinate}  type={type} StateInsertList={StateInsertList} navigation={navigation}/>
               </ScrollView>        
            </View>         
     );
