@@ -17,7 +17,11 @@ import CommunityHouse from "./src/view/Index/CommunityHouse";
 import Complaint from "./src/view/Index/Complaint";
 import MyEvents from "./src/view/Index/MyEvents";
 import NoLocation from "./src/view/NoLocation";
-
+import SignUpPets from "./src/view/SignUpPets";
+import PetsView from "./src/view/PetsView";
+import Pets from "./src/view/Index/Pets";
+import Donation from "./src/view/Donation";
+import DonationView from "./src/view/Index/DonationView";
 const Stack = createStackNavigator();
 
 const optionsHeader = () => ({
@@ -33,14 +37,30 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="DonationView" component={DonationView} options={optionsHeader} />
+        <Stack.Screen name="Donation" component={Donation} options={optionsHeader} />
         <Stack.Screen name="SignIn" component={SignIn} options={optionsHeader} />
-        
+        <Stack.Screen name="PetsView" component={PetsView} options={optionsHeader} />
         <Stack.Screen
           name="SignUp"
           component={SignUp}
           options={optionsHeader}
          
         />
+       
+        <Stack.Screen
+          name="SignUpPets"
+          component={SignUpPets}
+          options={optionsHeader}
+         
+        />
+         <Stack.Screen
+          name="Pets"
+          component={Pets}
+          options={optionsHeader}
+         
+        />
+        
         <Stack.Screen
           name="RedefinePass"
           component={RedfinePass}

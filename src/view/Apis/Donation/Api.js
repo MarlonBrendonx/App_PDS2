@@ -1,4 +1,4 @@
-const BASE_API='http://71e7-191-243-71-76.ngrok.io/api';
+import "../../../../config";
 
 export default{
 
@@ -26,9 +26,11 @@ export default{
 
     },
 
-    signIn:async (email,password) =>{
-        
-        const req = await fetch(`${BASE_API}/users/login`,{
+  
+
+    Donation:async (title,sobre,users_id,link) =>{
+
+        const req = await fetch(`${BASE_API}/donation`,{
 
             method: 'POST',
             headers:{
@@ -38,30 +40,7 @@ export default{
 
             },
 
-            body: JSON.stringify({email,password})
-
-        });
-
-        const json = await req.json();
-
-        return json;
-
-    },
-
-    signUp:async (name,email,phone,password) =>{
-
-     
-        const req = await fetch(`${BASE_API}/users`,{
-
-            method: 'POST',
-            headers:{
-
-                Accept: 'application/json',
-                'Content-Type': 'application/json' 
-
-            },
-
-            body: JSON.stringify({name,email,phone,password})
+            body: JSON.stringify({title,sobre,users_id,link})
 
         });
 

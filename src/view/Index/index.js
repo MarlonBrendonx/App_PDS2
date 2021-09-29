@@ -82,7 +82,7 @@ const DrawerContent = ({ navigation }) => {
     {
       id: 3,
       name: "Meus pets",
-      action: "List",
+      action: "Pets",
       icon: <Image source={iconpets} style={{ width:24,height:24 }} />,
     },
     {
