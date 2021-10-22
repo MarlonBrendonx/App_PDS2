@@ -5,28 +5,29 @@ import { color } from 'react-native-reanimated';
 const styles = StyleSheet.create({
 
     Container:{
-        height:'50%',
-        width:'90%',
-        borderRadius:50,
-        flexDirection:'column',
-        
+        height:'80%',
+        backgroundColor:'white',
+        borderRadius:30
     },
-
-    modalBody:{
-
-        height:'90%',
-        width:'100%',
-        alignItems:'center',
-        justifyContent:'space-between',        
-        
-    },
-
     header:{
-        position:'absolute',
-        right:0,
+     
+        height:30,
+        width:'100%',
+        borderRadius:30
         
-    }
+    },
+    btnclose:{
 
+        position:'absolute',
+        top:10,
+        right:10
+    },
+    notificationItems:{
+        
+        marginTop:10,
+        width:'100%',
+       
+    }
 });
 
 export default styles;

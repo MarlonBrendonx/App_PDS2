@@ -28,9 +28,9 @@ export default{
 
   
 
-    SignUpPets:async (name,sex,information,users_id,age,species,breed) =>{
+    Adoption:async (name,sex,animals_id,age,species,breed) =>{
 
-        const req = await fetch(`${BASE_API}/animals`,{
+        const req = await fetch(`${BASE_API}/adocaos`,{
 
             method: 'POST',
             headers:{
@@ -40,7 +40,7 @@ export default{
 
             },
 
-            body: JSON.stringify({name,sex,information,users_id,age,species,breed})
+            body: JSON.stringify({name,sex,animals_id,age,species,breed})
 
         });
 
@@ -50,12 +50,12 @@ export default{
 
     },
     
-    getPets:async () =>{
+    getAdoption:async () =>{
 
         const token = await AsyncStorage.getItem('token');
         //const id_users = await AsyncStorage.getItem('id');
-        id_users = 2;
-        const req =  await fetch(`${BASE_API}/animals/get`,{
+        //id_users = 2;
+        const req =  await fetch(`${BASE_API}/adocaos/get`,{
         
         method: 'POST',
         headers:{
@@ -65,7 +65,7 @@ export default{
 
         },
 
-        body: JSON.stringify({token,id_users})
+        body: JSON.stringify({token})
 
         });
         

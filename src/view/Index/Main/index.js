@@ -31,9 +31,15 @@ function MapScreen({ navigation }) {
     const [stateOptions,setstateOptions] = useState(false);
     const [option,setOptions]=useState("");
 
+    //const [users,setUsers] = useState([]);
+
     const setStateInsert = () =>{
         setStateInsertList(true);
         console.log(setStateInsert);
+        //setUsers([]);
+        //setUsers(setStateInsert);
+        //use={users}
+        //console.log(users);
     }
 
     const setStateOptions = (option) =>{

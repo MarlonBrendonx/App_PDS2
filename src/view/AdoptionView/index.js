@@ -42,7 +42,7 @@ function PetsView({navigation,route}){
         return (
 
         <ScrollView style={{ backgroundColor:'white' }}>
-            <Header navigation={navigation} title=" Dados do pet" />           
+            <Header navigation={navigation} title=" Dados da adoção" />           
         	<View  style={ styles.container} >
 				
             	<Image style={ styles.image } source={ require("../../assets/login/cat.png") } />
@@ -77,7 +77,7 @@ function PetsView({navigation,route}){
                 <Text>    Idade:{dados.age}</Text>
 				</View>
             </View>
-			<View style={{ backgroundColor: "yellow", flex: 0.9, width: '90%' ,flexDirection: "row",marginBottom:10 }} > 
+			<View style={{ backgroundColor: "pink", flex: 0.9, width: '90%' ,flexDirection: "row",marginBottom:10 }} > 
 				<Image style={ styles.image2 } source={ require("../../assets/login/login.png") } />
 				<Text style={{right:80,fontWeight: 'bold', marginTop:42}} >Eduardo Borges</Text>
 			</View>
@@ -86,14 +86,6 @@ function PetsView({navigation,route}){
 				<Text>Sobre:{dados.information}</Text>
 			</View>
 
-				<TouchableOpacity style={styles.btnSubmit} onPress={handleLoginButtonClick}>
-					<Text style={styles.submitText}>Editar</Text>
-					</TouchableOpacity>
-				<TouchableOpacity style={styles.btnRegister} onPress={signupadoption}>
-					<>
-						<Text style={styles.txt2}>Adicionar para adoção </Text>
-					</>
-				</TouchableOpacity >                
             </View>
 
     	</ScrollView>

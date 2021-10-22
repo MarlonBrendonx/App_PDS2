@@ -22,7 +22,14 @@ import LostPet_More from "./src/view/Index/SeeMore/LostPetMore";
 import CommunityHouse_More from "./src/view/Index/SeeMore/CommunityHouseMore";
 import Complaint_More from "./src/view/Index/SeeMore/ComplaintMore";
 import {LogBox} from 'react-native';
-
+import SignUpPets from "./src/view/SignUpPets";
+import Donation from "./src/view/Donation";
+import Pets from "./src/view/Index/Pets";
+import DonationView from "./src/view/Index/DonationView";
+import ModalDonation from "./src/view/Index/ModalDonation";
+import PetsView from "./src/view/PetsView";
+import Adoption from "./src/view/Index/Adoption";
+import AdoptionView from "./src/view/AdoptionView";
 
 LogBox.ignoreLogs(['Warning: ...']);
 const Stack = createStackNavigator();
@@ -40,7 +47,16 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        
         <Stack.Screen name="Preloading" component={Preloading} options={optionsHeader} />
+        <Stack.Screen name="Donation" component={Donation} options={optionsHeader} />
+        <Stack.Screen name="Pets" component={Pets} options={optionsHeader} />
+        <Stack.Screen name="SignUpPets" component={SignUpPets} options={optionsHeader} />
+        <Stack.Screen name="DonationView" component={DonationView} options={optionsHeader} />
+        <Stack.Screen name="ModalDonation" component={ModalDonation} options={optionsHeader} />
+        <Stack.Screen name="PetsView" component={PetsView} options={optionsHeader} />
+        <Stack.Screen name="Adoption" component={Adoption} options={optionsHeader} />
+        <Stack.Screen name="AdoptionView" component={AdoptionView} options={optionsHeader} />
 
         <Stack.Screen
           name="SignIn"

@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native";
-import Api  from '../../Apis/SignUpPets/Api';
+import Api  from '../../Apis/Adoption/Api';
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity,Image } from "react-native";
 import Header from '../../../components/Header';
 import {
@@ -16,28 +16,28 @@ import SignUpPets from "../../SignUpPets";
 //<Image style={ styles.image2 } source={ require("../../../assets/login/login.png") } />
 
 
-function Pets ({navigation}) {
+function Adoption ({navigation}) {
 
-  const [listpets,setListPets] = useState([]);
+  const [listpets,setListAdoption] = useState([]);
 	const [loading,setLoading] = useState(false);
 	const [state,setState] = useState(false);
 	
 	useEffect( ()=>{
 		
-		getPets();
+		getAdoption();
 	
 	}, []);
 	
-	const getPets = async ()=>{
+	const getAdoption = async ()=>{
 		
 		setLoading(true);
-		setListPets([]);
+		setListAdoption([]);
 	
-		let res= await Api.getPets();
+		let res= await Api.getAdoption();
 	   
 		if( res.status ){
 			
-			setListPets(res.msg.data);
+			setListAdoption(res.msg.data);
 			console.log(res.msg.data);
 		}else{
 	
@@ -50,13 +50,12 @@ function Pets ({navigation}) {
 
   const [selectedId, setSelectedId] = useState(null);
 
- 
-  
+
   const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
       <Image style={ styles.image2 } source={ require("../../../assets/login/login.png") } />
       <View>
-      <Text style={[styles.title, textColor,]}>{"NOME: "+item.name}</Text>
+      <Text style={[styles.title, textColor,]}>{"NOME: "+item.breed}</Text>
       <Text></Text>
       <Text style={[styles.title, textColor,]}>{"SEXO: "+item.sex}</Text>
       <Text></Text>
@@ -71,7 +70,7 @@ function Pets ({navigation}) {
     return (
       <Item
         item={item}
-        onPress={() =>  navigation.navigate('PetsView',
+        onPress={() =>  navigation.navigate('AdoptionView',
         {dados : item})}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
@@ -83,7 +82,7 @@ function Pets ({navigation}) {
     <ScrollView>
      
       <View>
-      <Header navigation={navigation} title="Meus Pets" /> 
+      <Header navigation={navigation} title="Adoções" /> 
         
 
       </View>
@@ -95,11 +94,7 @@ function Pets ({navigation}) {
           extraData={selectedId}
         />
       </SafeAreaView>
-      <View>
-      <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('SignUpPets')}>
-				<Text style={styles.submitText}>Cadastrar Pet</Text>
-			</TouchableOpacity>
-      </View>
+         
     </ScrollView>
   );
 };
@@ -150,4 +145,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Pets;
+export default Adoption;
