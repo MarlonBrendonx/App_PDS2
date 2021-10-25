@@ -20,7 +20,7 @@ export default{
 
         const json = await req.json();
 
-        console.log(json);
+   
 
         return json;
 

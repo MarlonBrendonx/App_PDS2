@@ -4,51 +4,32 @@ import { View,KeyboardAvoidingView,Image
 import  styles from './styles'
 import { ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Api  from '../Apis/Adoption/Api';
-import Header from '../../components/Header';
 import { Input, SocialIcon  } from 'react-native-elements';
+import Api  from '../Apis/SignIn-SignUp/Api';
 import  {AsyncStorage}  from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 //import { UserContext } from '../../context/UserContext';
 import {useNetInfo} from "@react-native-community/netinfo";
 import {UserContext} from '../../context/UserContext';
 
-function PetsView({navigation,route}){
-		const { dados }= route.params; 
+function PetsView({navigation}){
+        
 		const handleLoginButtonClick = () =>{
 
 			navigation.navigate('SignIn');   
 
 		};
-		const signupadoption =  async() =>{
-			if( dados !== null){
-				let res = await Api.Adoption(dados.name,dados.sex,dados.id_animals,dados.age,dados.species,dados.breed);
-					if( res.status ){
-						
-						alert(res.msg);
-						
-
-					}else{
-						
-						alert("Erro "+res.error);
-						
-					}
-			}else{
-
-				alert("Preencha os campos!");
-			}
-		}
 
         return (
 
         <ScrollView style={{ backgroundColor:'white' }}>
-            <Header navigation={navigation} title=" Dados do pet" />           
+                        
         	<View  style={ styles.container} >
-				
+
             	<Image style={ styles.image } source={ require("../../assets/login/cat.png") } />
 
 				<View style={{ backgroundColor: "white", flex: 0.9, width: '90%',marginBottom:30}} > 
-				<Text style={{fontWeight: 'bold'}}>     {dados.name}</Text>
+				<Text style={{fontWeight: 'bold'}}>     BRUTOS</Text>
 				<View style={{flexDirection: "row"}} > 
 				<Icon
 						name='github'
@@ -56,7 +37,7 @@ function PetsView({navigation,route}){
 						color='#B33BF6'
 						rigth={80}
 					/>
-                <Text>  Raça:{dados.breed}</Text>
+                <Text>  Raça:</Text>
 				</View>
 				<View style={{flexDirection: "row"}} > 
 				<Icon
@@ -65,7 +46,7 @@ function PetsView({navigation,route}){
 						color='#B33BF6'
 						rigth={80}
 					/>
-                <Text>  Sexo:{dados.sex}</Text>
+                <Text>  Sexo:</Text>
 				</View>
 				<View style={{flexDirection: "row"}} > 
 				<Icon
@@ -74,7 +55,7 @@ function PetsView({navigation,route}){
 						color='#B33BF6'
 						rigth={80}
 					/>
-                <Text>    Idade:{dados.age}</Text>
+                <Text>    Idade:</Text>
 				</View>
             </View>
 			<View style={{ backgroundColor: "yellow", flex: 0.9, width: '90%' ,flexDirection: "row",marginBottom:10 }} > 
@@ -83,17 +64,17 @@ function PetsView({navigation,route}){
 			</View>
 			<View style={{ backgroundColor: "white", flex: 0.9, width: '90%' ,marginBottom:20  }} > 
 				
-				<Text>Sobre:{dados.information}</Text>
+				<Text>Sobre:</Text>
 			</View>
 
 				<TouchableOpacity style={styles.btnSubmit} onPress={handleLoginButtonClick}>
 					<Text style={styles.submitText}>Editar</Text>
 					</TouchableOpacity>
-				<TouchableOpacity style={styles.btnRegister} onPress={signupadoption}>
+				<TouchableOpacity style={styles.btnRegister} onPress={handleLoginButtonClick}>
 					<>
 						<Text style={styles.txt2}>Adicionar para adoção </Text>
 					</>
-				</TouchableOpacity >                
+				</TouchableOpacity>                
             </View>
 
     	</ScrollView>

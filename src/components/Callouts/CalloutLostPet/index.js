@@ -15,8 +15,13 @@ function CalloutMap(props) {
       <Image style={styles(props).avatar} source={require("../../../assets/main/event_1.png")}/>
           <Callout tooltip={true} onPress={()=>{props.navigation.navigate("LostPet_More",{
 
+              StateInsertList:props.StateInsertList,
               dataEvent:props.data,
-              images:props.data.images
+              images:props.data.images,
+              status:props.data.status,
+              type:props.data.type,
+              state:false
+              
             
           })}}>
              <View style={styles(props).callout}>

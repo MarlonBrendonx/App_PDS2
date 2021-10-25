@@ -82,8 +82,8 @@ const styles = (props)=> StyleSheet.create({
     },
     img:{
 
-        width:70,
-        height:70,
+        width:90,
+        height:90,
         borderRadius:25,
         marginTop:10,
         marginLeft:5
@@ -93,7 +93,8 @@ const styles = (props)=> StyleSheet.create({
         height:100,
     },
     data:{
-        paddingLeft:20
+        paddingLeft:20,
+       
     },
     txt:{
 

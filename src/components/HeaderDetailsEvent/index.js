@@ -1,10 +1,9 @@
 import React from "react";
 import { View,Text, TouchableOpacity } from "react-native";
-import ImageModal from 'react-native-image-modal';
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 
-const Header = (props) => {
+const HeaderDetailsEvent = (props) => {
 
 
   return (
@@ -20,4 +19,4 @@ const Header = (props) => {
   );
 };
 
-export default Header;
+export default HeaderDetailsEvent;

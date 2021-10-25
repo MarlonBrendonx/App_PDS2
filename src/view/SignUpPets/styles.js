@@ -123,43 +123,9 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        paddingTop: 10,
+        paddingTop: 40,
         alignItems: "center"
-      },
-      btnAddPhoto:{
-
-        height:40,
-        width:'60%',
-        justifyContent:'center',
-        marginTop:10,
-        marginBottom:10,
-        alignSelf:'flex-end',
-        right:20
-    
-    },
-    containerImage:{
-    
-        flexDirection:'row',
-        width: '94%',
-        height: 'auto',
-        resizeMode: "contain",
-        borderRadius:20,
-        padding:6  
-    
-    },
-    imgsContainer:{
-    
-        width: 90,
-        height: 90,
-        borderRadius: 90 / 2,
-        overflow: "hidden",
-        borderWidth: 3,
-    
-        
-        borderBottomWidth:1,
-      
-    
-    }
+      }
 
 
 });

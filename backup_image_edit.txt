@@ -1,0 +1,29 @@
+<View style={styles(props).containerImage}>
+                      <ScrollView horizontal={true} style={{ width: '94%' }}>
+                                          
+                      { stateEdit ?
+                        selectedImageEdit.map( (localUri,index) =>   
+                        <>
+                        <Image
+                          style={ styles(props).imgsContainer }
+                          key={ index  }
+                          source={ localUri.count  ? { uri:localUri.count }: { uri: `data:image/jpg;base64,${localUri}` } }
+                        />
+                        <TouchableOpacity>
+                          <Entypo name="circle-with-cross" key={index} size={25} color="#B33BF6" onPress={()=>removeImage(localUri.count  ? localUri.count : localUri)}/>
+                        </TouchableOpacity>
+                        </>
+                        
+                      )
+                      :
+                      selectedImage.map( localUri =>   
+                        <Image
+                        style={ styles(props).imgsContainer }
+                        key={ localUri }
+                        source={{  uri:localUri.count }}
+                      /> 
+                      )
+                     
+                    }                  
+                      </ScrollView>  
+                    </View>

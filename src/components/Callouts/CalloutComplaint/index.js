@@ -17,12 +17,17 @@ function CalloutMap_3(props) {
       <Marker  coordinate={{ latitude:parseFloat(props.data.latitude),longitude: parseFloat(props.data.longitude) }} >
       <Image style={styles(props).avatar} source={require("../../../assets/main/event_3.png")} />
           <Callout visible={CalloutVisible} tooltip={true} onPress={()=>{ props.navigation.navigate("Complaint_More",{
-
+             
+             StateInsertList:props.StateInsertList,
              id_event:props.data.id_event,
-             status:props.data.status, 
+             user_id_event: props.data.user_id,
+             status:props.data.status,
+             type:props.data.type,
              information:props.data.information,
-             images:props.data.images
-
+             images:props.data.images,
+             state:false
+            
+            
              })}}>
              <View style={styles(props).callout}>
               <View style={ styles(props).headercallout }>

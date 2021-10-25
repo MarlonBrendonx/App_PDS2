@@ -28,9 +28,6 @@ function NoLocation({route,navigation }) {
 
                 <View style={ styles.Buttons } >
                     <>
-                        <TouchableOpacity style={styles.btnUpdate} onPress={ () => navigation.goBack() }>
-                                <Text style={styles.submitTextUpdate}>Atualizar</Text>
-                        </TouchableOpacity>
                         
                         <TouchableOpacity style={styles.btnExit} onPress={() => BackHandler.exitApp()} >
                                 <Text style={styles.textExit}>Sair do aplicativo</Text>

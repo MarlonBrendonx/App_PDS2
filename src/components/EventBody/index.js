@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useContext  } from 'react';
-import { Image,View,NavigationActions,Text,TouchableOpacity, TextInput } from 'react-native';
+import { Image,View,Text,TouchableOpacity, TextInput,Alert } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import styles from "./styles";
 import Modal from 'react-native-modal';
@@ -7,19 +7,21 @@ import { Entypo } from "@expo/vector-icons";
 import { ScrollView } from 'react-native';  
 import { BackgroundImage } from 'react-native-elements/dist/config';
 import * as ImagePicker from 'expo-image-picker';
-import {UserContext} from "../../context/UserContext";
+import { UserContext } from "../../context/UserContext";
 import Api from '../../view/Apis/Map/Api';
-import Navigation from '../../../Navigation';
 
 function EventBody(props) {
 
    
     const [selectedImage, setSelectedImage] = useState([]);
+    const [selectedImageEdit, setSelectedImageEdit] = useState([]); 
     const [information,setInformation] = useState("");
     const { state:person }=useContext(UserContext);
     const [imagesArray,setImagesArray] = useState([{}]);
     const [stateError,setStateError] = useState(false);
-
+    const [stateEdit, setStateEdit] = useState(false);  
+    const [selected,setSelectedValue]=useState("");
+    const [remove,setRemove]=useState(false);
 
      const uploadImages = async(form)=>{
 
@@ -34,8 +36,6 @@ function EventBody(props) {
 
         if(  information != '' && props.coordinate != null  && person.id != '' && selectedImage.length ){
 
-          
-         
               let json = await Api.registerEvent(
 
                   props.type,
@@ -100,32 +100,128 @@ function EventBody(props) {
         }
 
   }
-       
 
+  const handleUpdateButtonClick = async() =>{
+
+      if( props.item.type ==  1 ){
+
+          let json = await Api.UpdateEvent(
+
+            information,
+            null,
+            props.item.id_event,
+            props.item.type
+          
+          );
+
+          if( json.status ){
+
+            alert(json.msg);
+            
+            props.navigation.navigate("MyEvents",{refresh:true});
+
+          }else{
+
+            alert(json.msg);
+            
+          }
+
+
+      }else{
+
+        if( information != '' &&  selected){
+            
+       
+            let json = await Api.UpdateEvent(
+
+                information,
+                selected,
+                props.item.id_event,
+                props.item.type
+                
+            );
+
+            if( json.status ){
+
+                alert(json.msg);
+                props.navigation.navigate("MyEvents",{refresh:true});
+
+            }else{
+
+                alert(json.msg);
+            }
+            
+        }
+      }
+
+  }
+
+      
+    useEffect( ()=>{
+
+          if( props.item != null ){
+
+            setStateEdit(true);
+            setSelectedImageEdit(props.item.images);
+            setSelectedValue(props.item.status);
+            setInformation(props.item.information);
+          
+          }
+
+    }, []);
+
+    useEffect( ()=>{
+
+      if( remove ){
+        setSelectedImageEdit(selectedImageEdit);
+        setRemove(false);
+      }
+      
+
+    }, [selectedImageEdit]);
+    
+    
     let openImagePickerAsync = async () => {
         
-
         let result = await ImagePicker.launchImageLibraryAsync({
+
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           aspect: [4, 3],
           quality: 1,
+
         });
         
         const count="localUri"+selectedImage.length;
 
         if ( ! result.cancelled ) {
 
-
           const data = new FormData();
 
-          setSelectedImage((selectedImage)=>[...selectedImage,{ count: result.uri }]);
+          if( stateEdit ){
 
-        
+            setSelectedImageEdit((selectedImageEdit)=>[...selectedImageEdit,{ count: result.uri }]);
+          
+          }else{
+
+            setSelectedImage((selectedImage)=>[...selectedImage,{ count: result.uri }]);  
+                
+          }
         }
-    
-         
-
+  
       }
+
+     const removeImage = async (index_params) =>{
+
+
+      selectedImageEdit.map( (localUri,index) =>  
+
+          { if(localUri.count === index_params ){
+               selectedImageEdit.pop();
+          } }
+      )  
+      setRemove(true);
+
+     }
   
     return(
   
@@ -140,14 +236,23 @@ function EventBody(props) {
                     <TextInput
                       style={ styles(props).textArea }
                       underlineColorAndroid="transparent"
-                      placeholder="Informe alguns detalhes "
+                      placeholder={stateEdit ? props.item.information : "Informe alguns detalhes "}
                       placeholderTextColor="grey"
                       numberOfLines={10}
                       multiline={true}
-                      onChangeText={t=>setInformation(t)}
-                      
+                      onChangeText={  t=>setInformation(t) }
                     />
-                    <TouchableOpacity style={ styles(props).btnAddPhoto } onPress={openImagePickerAsync} >
+                     <Text style={stateEdit && ( props.item.type == 2 || props.item.type == 0 )  ? { marginTop:10,left:10 }: {display:'none'}}>Status:</Text>
+                     <Picker
+                      selectedValue={selected}
+                      style={ stateEdit && ( props.item.type == 2 || props.item.type == 0 )  ? { height: 50, width: 190 }: { display:'none' }  }
+                      onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                     >
+                        <Picker.Item label="Não resolvido" value="Não resolvido" />
+                        <Picker.Item label="Em andamento" value="Em andamento" />
+                        <Picker.Item label="Resolvido" value="Resolvido" />
+                    </Picker>
+                    <TouchableOpacity style={ stateEdit ? { display:'none' }  : styles(props).btnAddPhoto } onPress={openImagePickerAsync} >
                       <Image 
 
                         style={{ height:24,width:24}}
@@ -156,28 +261,28 @@ function EventBody(props) {
                       />
                     </TouchableOpacity>
                     <View style={styles(props).containerImage}>
-                      <ScrollView horizontal={true} style={{ width: '94%' }}>
-                                          
-                      
-                      {
-                        selectedImage.map( localUri =>   
-                        <Image
-                          style={ styles(props).imgsContainer }
-                          key={ localUri.count }
-                          source={{ uri:localUri.count }}
-                        />
-                      )}                  
-                      </ScrollView>  
-                    </View>
-                      <TouchableOpacity style={ styles(props).btnAddEvent } onPress={ handleRegisterButtonClick}>
-                        <Text style={{ color:'white' }}>Adicionar evento</Text> 
+                          <ScrollView horizontal={true}>
+                                        
+                            {
+
+                              selectedImage.map( localUri =>   
+                              <Image
+                                  style={ styles(props).imgsContainer }
+                                  key={ localUri.count }
+                                  source={{ uri:localUri.count }}
+                               />
+                            )}
+                                        
+                          </ScrollView>  
+                        </View>
+                      <TouchableOpacity style={ styles(props).btnAddEvent } onPress={ stateEdit ? handleUpdateButtonClick : handleRegisterButtonClick }>
+                        <Text style={{ color:'white' }}>{ stateEdit ? "Salvar Alteração" : "Adicionar evento" } </Text> 
                         <Image style={ styles(props).iconButtonsubmit } source={require("../../assets/login/paw.png")} />
                       </TouchableOpacity>
                   </View>
                 </View>
               </BackgroundImage>
              
-              
     );
 }
 export default EventBody;

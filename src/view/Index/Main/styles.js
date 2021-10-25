@@ -191,6 +191,7 @@ const styles = StyleSheet.create({
         elevation:3,
         alignItems:'center',
         justifyContent:'center',
+        display:'none'
         
     },
     mylocationIcon:{

@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
 
    
     header:{
+        
         height:80,
         backgroundColor:'transparent',
         borderRadius:4,
@@ -12,7 +13,9 @@ const styles = StyleSheet.create({
         alignItems:'center',
         flexDirection:'row',
         paddingTop:10,
-      
+        position:'absolute',
+        zIndex:150
+    
         
     },
     titleHeader:{
@@ -21,9 +24,13 @@ const styles = StyleSheet.create({
         fontSize:18
     },
     buttonBack:{
-        position:'absolute',
+        
         left:20,
-        paddingTop:10
+        borderWidth:1,
+        paddingRight:10,
+        paddingLeft:10,
+        borderRadius:24,
+        borderColor:'white'
     }
     
 });

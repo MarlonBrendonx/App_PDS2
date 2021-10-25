@@ -12,20 +12,20 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import {UserContext} from "../../../context/UserContext";
 import Api from "../../Apis/Map/Api";
-
+import ModalPets  from './ModalPets';
 
 function LostPet({ route,navigation }) {
 
    
     const [selectedImage, setSelectedImage] = useState([]);
 
-    const [status, setSelectedValue] = useState(null);
+    const [status, setSelectedValue] = useState("Não resolvido");
     const { coordinate,type,StateInsertList }= route.params;
-    const [information,setInformation] = useState(null);
+    const [information,setInformation] = useState("");
     const [photos,setPhotos] = useState(null);
     const [animal_id,setAnimal_ID] = useState(null);
     const [stateError,setStateError] = useState(false);
-
+    const [isModalVisible,setisModalVisible] = useState(false);
 
     const { state:person }=useContext(UserContext);
 
@@ -50,34 +50,37 @@ function LostPet({ route,navigation }) {
   
           if ( ! result.cancelled ) {
   
-  
-            const data = new FormData();
-  
             setSelectedImage((selectedImage)=>[...selectedImage,{ count: result.uri }]);
-  
           
           }
-      
+          
+          console.log(selectedImage);
     
+    }
+
+
+    const getAnimals = async () => {
+
+      
+
     }
     
     const handleRegisterButtonClick = async() =>{
 
-        setAnimal_ID(2);
-      
-   
-        if( selectedImage.length && animal_id != null && status != null && information != '' && coordinate != null  && person.id != null ){
+        setAnimal_ID(3);
+        
+        if( selectedImage.length !=0  && information != '' && coordinate != null  && person.id != null ){
 
-            console.log(animal_id,status,information,coordinate,person.id);
+
             let json = await Api.registerEvent(
 
                 type,
-                status,
+                "Não resolvido",
                 "images/" + person.id,
                 coordinate.latitude,
                 coordinate.longitude,
                 information,
-                animal_id,
+                3,
                 person.id
                 
             );
@@ -86,7 +89,7 @@ function LostPet({ route,navigation }) {
               
                 StateInsertList();
                 
-                const formData =new FormData();
+                  const formData =new FormData();
           
                   Object.keys(selectedImage).map(function(key,value) {
                   
@@ -132,10 +135,13 @@ function LostPet({ route,navigation }) {
 
             alert("[*] Campos vazios!");
         }
+       
 
     }
 
-
+    const toggleModal = () => {
+        setisModalVisible(!isModalVisible);
+    };
 
     return(
       
@@ -151,27 +157,14 @@ function LostPet({ route,navigation }) {
                         <View style={ styles.body }>
                             
                             <View style={ styles.containerOptions } >
-                            <TouchableOpacity>
+                            <ModalPets isVisible={isModalVisible} onClose={toggleModal} />
+                            <TouchableOpacity onPress={toggleModal}>
                                 <View style={ styles.optionsEvent }>
-                                        
                                         <Text style={ styles.Optiontitle }>Meu Pet</Text>
                                         <Ionicons name="open-outline" size={24} color="black" /> 
                                 </View>
                             </TouchableOpacity>
-                            <View style={ styles.containerOptions }>
-                                <Text style={ styles.txtOption }>Infome o status</Text>
-                                <Picker
-                                    selectedValue={status}
-                                    style={ styles.pickerField }
-                                    onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                                   
-                                    >
-                                    <Picker.Item color="red" label="Não Resolvido" value="Não Resolvido" />
-                                    <Picker.Item color="green" label="Resolvido" value="Resolvido" />
-                                    <Picker.Item color="orange" label="Em Andamento" value="Em Andamento" />
-
-                                </Picker>
-                            </View>
+                            
                             <View style={ styles.containerOptions }>
                                 <Text style={ styles.txtOption }>Informações</Text>
                                 <TextInput
@@ -221,6 +214,7 @@ function LostPet({ route,navigation }) {
                     </View>
                 </BackgroundImage>
                 </ScrollView>
+                
            </View>
 
     );

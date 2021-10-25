@@ -70,23 +70,7 @@ const styles = StyleSheet.create({
         width:'100%',
         left:5,
     }, 
-    sliderKm:{
-        
-        top:5,
-        height:100,
-        backgroundColor: 'rgba(196, 196, 196, 0.3)',
-        borderRadius:20,
-        justifyContent:'center'
-    },
-    sliderRange:{
-        width:'100%',
-        
-    },
-    txtSlider:{
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'space-between'
-    }
+    
 });
 
 export default styles;

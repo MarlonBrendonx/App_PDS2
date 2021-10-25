@@ -1,6 +1,6 @@
 import React, { useState,useEffect} from 'react';
 import { View,KeyboardAvoidingView,Image
-,TouchableOpacity,Text,ScrollView} from 'react-native';
+,TouchableOpacity,Text,ScrollView,Alert} from 'react-native';
 import  styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, SocialIcon  } from 'react-native-elements';
@@ -27,14 +27,35 @@ function SignUp({navigation}){
 				}else{
 					
 					let res = await Api.signUp(nameField,emailField,phoneField,passwordField);
+					
 					if( res.status ){
 						
-						alert(res.msg);
-						//navigation.navigate('Index');
-
+						Alert.alert(
+							res.msg,
+							"",
+							[
+							{
+								text: "Ok",
+								onPress: () => navigation.navigate('SignIn'),
+								style: "OK"
+							},
+							]
+						);
+						
 					}else{
 						
-						alert("Erro"+res.error);
+						Alert.alert(
+							res.msg,
+							"",
+							[
+							{
+								text: "Ok",
+								onPress: () =>  null,
+								style: "OK"
+							},
+							]
+						);
+						
 					}
 
 				}

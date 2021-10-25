@@ -1,4 +1,5 @@
 import "../../../../config";
+import { AsyncStorage } from "react-native";
 
 export default{
 
@@ -20,10 +21,85 @@ export default{
 
         const json = await req.json();
 
-        console.log(json);
+ 
+        return json;
+
+    },
+
+    Remove:async (passwd,email) =>{
+
+     
+        const req = await fetch(`${BASE_API}/users/remove`,{
+
+            method: 'POST',
+            headers:{
+
+                Accept: 'application/json',
+                'Content-Type': 'application/json' 
+
+            },
+
+            body: JSON.stringify({passwd,email})
+
+        });
+
+        const json = await req.json();
+
+ 
 
         return json;
 
     },
+
+    UploadImagePerfil:async (formData) =>{
+
+        const req = await fetch(`${BASE_API}/users/uploadImagePerfil`,{
+
+                method: 'POST',
+                headers:{
+
+                        Accept: 'application/json',
+                        'Content-Type': 'multipart/form-data' 
+
+                },
+
+                    
+                body: formData
+                
+        });
+
+        const json = await req.json();
+        
+
+        return json;
+
+    },
+    redfinePass:async (passwd,newpasswd) =>{
+
+        const token = await AsyncStorage.getItem('token');
+
+        const req = await fetch(`${BASE_API}/users/redfinepass`,{
+
+            method: 'POST',
+            headers:{
+
+                Accept: 'application/json',
+                'Content-Type': 'application/json' 
+
+            },
+
+            body: JSON.stringify({token,passwd,newpasswd})
+
+        });
+
+        const json = await req.json();
+
+ 
+
+        return json;
+
+    },
+
+
 
 };

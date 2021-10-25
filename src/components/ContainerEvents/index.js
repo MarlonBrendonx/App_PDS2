@@ -16,7 +16,8 @@ const Button = (props) => {
                   {
                     coordinate:props.coordinate,
                     type:props.type,
-                    StateInsertList:props.StateInsertList
+                    StateInsertList:props.StateInsertList,
+                    item:props.item
                   }) 
               } }
             >

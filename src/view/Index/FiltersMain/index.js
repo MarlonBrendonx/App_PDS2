@@ -117,24 +117,7 @@ function Filters(props) {
                         </View>
                     </View>
                 </View>
-                <View style={ styles.bodySlider }>
-                    <View style={ styles.txtSlider }>
-                        <Text style={{ left:5 }}>Faixa em km</Text>
-                        <Text style={{ right:5 }}> 0-{rangekm}km</Text>
-                    </View>
-                    <View style={ styles.sliderKm }>
-                        <Slider
-                            style={ styles.sliderRange }
-                            onValueChange={val => setRange(parseFloat(val).toFixed(2))}
-                            minimumValue={0}
-                            maximumValue={100}
-                            minimumTrackTintColor="#B33BF6"
-                            maximumTrackTintColor="#000000"
-                            thumbTintColor="#B33BF6"
-                        />
-                    </View>
-                    
-                </View>
+                
             </View>
             </View>
         </Modal>

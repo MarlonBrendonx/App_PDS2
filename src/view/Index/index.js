@@ -20,6 +20,7 @@ import iconlist from "../../assets/drawer/list.png";
 import iconmap from "../../assets/drawer/map.png";
 import iconpets from "../../assets/drawer/pets.png";
 import iconprofile from "../..//assets/drawer/person.png";
+import logout from "../..//assets/drawer/logout.png";
 
 const Drawer = createDrawerNavigator();
 
@@ -30,7 +31,8 @@ const HeaderDrawer = () => {
   const { state:person }=useContext(UserContext);
 
   const name=person.name.split(" ");
-  
+ 
+
   return (
     
     <View style={styles.drawer_header}>
@@ -39,7 +41,7 @@ const HeaderDrawer = () => {
        resizeMode="cover" imageStyle={{opacity: 0.45}}
         >
       <View style={styles.user}>
-        <ProfileUser />
+        <ProfileUser  />
         <Text style={{  color:'#FFF',fontWeight:'bold' }}>Olá {name[0]}</Text>
       </View>
       
@@ -56,11 +58,17 @@ const FooterDrawer = () => {
   return (
     <View style={styles.footer}>
       <Text style={styles.text_secundary}>
-         <Text style={styles.text_primary}>--</Text>
+         <Text style={styles.text_primary}>Footer</Text>
       </Text>
     </View>
   );
 };
+
+const logoutApp = () => {
+
+    alert("ok");
+
+}
 
 const DrawerContent = ({ navigation }) => {
   const listMenuDrawer = [
@@ -94,8 +102,14 @@ const DrawerContent = ({ navigation }) => {
     {
       id: 5,
       name: "Doações",
-      action: "DonationView",
+      action: "Donation",
       icon: <Image source={icondoacoes} style={{ width:24,height:24 }} />
+    },
+    {
+      id: 6,
+      name: "Sair",
+      action: 'LogoutApp',
+      icon: <Image source={logout} style={{ width:24,height:24 }} />
     },
 
   ];

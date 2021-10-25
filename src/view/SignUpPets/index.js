@@ -9,15 +9,10 @@ import { useNavigation } from 'react-native';
 //import { StatusBar, Modal } from 'react-native'; // Adicionado o Modal
 //import { RNCamera } from 'react-native-camera';
 import { Picker, StyleSheet } from "react-native";
-import Header from '../../components/Header';
-import * as ImagePicker from 'expo-image-picker';
-import { BackgroundImage } from 'react-native-elements/dist/config';
-import { Ionicons } from "@expo/vector-icons";
-import {UserContext} from "../../context/UserContext";
 //import { launchImageLibrary } from 'react-native-image-picker';
 //renderCameraModal = () => (
 function SignUpPets({navigation}){
-
+        
         const [hidePass, setHidePass] = useState(true);
 		const [nameField, setNameField] = useState('');
 		const [sobreField, setSobreField] = useState('');
@@ -25,33 +20,8 @@ function SignUpPets({navigation}){
 		const [sexoField, setSexoField] = useState('');
 		const [racaField, setRacaField] = useState('');
 		const [selectedValue, setSelectedValue] = useState("dog");
-		const [selectedImage, setSelectedImage] = useState([]);
 		const [file, setFile] = useState();
-		count = 2;
-
-		let openImagePickerAsync = async () => {
-
-			let result = await ImagePicker.launchImageLibraryAsync({
-				mediaTypes: ImagePicker.MediaTypeOptions.All,
-				aspect: [4, 3],
-				quality: 1,
-			  });
-			  
-			  const count="localUri"+selectedImage.length;
-	  
-			  if ( ! result.cancelled ) {
-	  
-	  
-				const data = new FormData();
-	  
-				setSelectedImage((selectedImage)=>[...selectedImage,{ count: result.uri }]);
-	  
-			  
-			  }
-		  
-		
-		}
-
+		count = 1;
         const handleRegisterButtonClick = async() =>{
 
 		
@@ -73,11 +43,34 @@ function SignUpPets({navigation}){
 			}
                 
         };
+		const handleChoosePhoto = () => {
+			const options = {
+			  noData: true,
+			  title: 'Foto de avaliação',
+			  takePhotoButtonTitle: 'Escolha uma foto',
+			  chooseFromLibraryButtonTitle: 'Selecione da galeria uma foto',
+			  selectionLimit: 1, // Se deixar 1, será permitido apenas uma foto e 0 várias 
+			};
 		
-		const handleLoginButtonClick = (props) =>{
+			launchImageLibrary(options, async (response) => {
+			  if (response.didCancel) {
+				console.log('Usuário cancelou a seleção');
+			  } else if (response.error) {
+				console.log('Ocorreu um erro.');
+			  } else {
+				const photoFile = {
+				  uri: asset.uri,
+				  name: asset.fileName,
+				  type: 'image/jpeg',
+				};
+		
+				setFile(photoFile);
+			  }
+			});
+		  };
+		const handleLoginButtonClick = () =>{
 
-			//getPets();  
-			alert("Teste: "+props.data.name);
+			navigation.navigate('SignUpPets');   
 
 		};
 		
@@ -85,12 +78,12 @@ function SignUpPets({navigation}){
 
 		//const [selectedValue, setSelectedValue] = useState("java");
         <ScrollView style={{ backgroundColor:'white' }}>
-            <Header navigation={navigation} title=" Pets" />            
+                        
         	<View  style={ styles.container} >
-				
+
             	<Image style={ styles.image } source={ require("../../assets/login/login.png") } />
-                <Text style={ styles.textTitle }> Cadastre um pet!</Text>
-                
+                <Text style={ styles.textTitle }> Vamos Começar !</Text>
+                <Text>Cadastre um Pet</Text>
 
             <View style={styles.containerInputs}>  
 				<Input
@@ -171,35 +164,13 @@ function SignUpPets({navigation}){
 		<Picker.Item label="Outros" value="outros" />
       </Picker>
     </View>
-	</View>
-                            <View >
-                                <TouchableOpacity style={ styles.btnAddPhoto } onPress={openImagePickerAsync} >
-                                   <Image 
-
-                                        style={{ height:24,width:24}}
-                                        source={ require("../../assets/Events/camera.png") }
-                                   
-                                   />
-                                </TouchableOpacity>
-                                <View style={styles.containerImage}>
-                                    <ScrollView horizontal={true}>
-                                        
-                                            {
-
-                                            selectedImage.map( localUri =>   
-                                            <Image
-                                                style={ styles.imgsContainer }
-                                                key={ localUri.count }
-                                                source={{ uri:localUri.count }}
-                                                />
-                                            )}
-                                        
-                                    </ScrollView>  
-                                </View>
-                             
+	
 			
             </View>
-			
+			<TouchableOpacity style={styles.btnSubmit1} onPress={handleChoosePhoto}>
+				<Text style={styles.submitText}>Adicionar imagem</Text>
+	
+			</TouchableOpacity>
 			<TouchableOpacity style={styles.btnSubmit} onPress={handleRegisterButtonClick}>
 				<Text style={styles.submitText}>Cadastrar</Text>
 					<Image style={ styles.iconButtonsubmit } source={require("../../assets/login/paw.png")} />

@@ -15,6 +15,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import styles from "./styles";
 import Api from "../../../view/Apis/Map/Api";
 import {UserContext} from "../../../context/UserContext";
+import { Entypo } from "@expo/vector-icons";
 
 
 const rowSwipeAnimatedValues = {};
@@ -27,6 +28,7 @@ Array(1)
 export default function SwipeValueBasedUi(props) {
 
     const { state:person }=useContext(UserContext);
+    const base64Image=props.data.images[0];
 
     const [listData, setListData] = useState(
         Array(1)
@@ -40,6 +42,27 @@ export default function SwipeValueBasedUi(props) {
         }
     };
 
+    const handleClickEvent= async () =>{
+      
+        props.navigation.navigate("CommunityHouse_More",{
+                   
+            information:props.data.information,
+            images:props.data.images
+
+        });
+    
+   }
+
+   const handleClickEdit = async () => {
+
+        props.navigation.navigate("CommunityHouse",{
+            item:props.data,
+        });
+
+   }
+
+
+   
     const removeEvent = async (rowMap, rowKey)=>{
         
         let res= await Api.removeEvent(props.data.id_event,person.id);
@@ -50,6 +73,7 @@ export default function SwipeValueBasedUi(props) {
             const newData = [...listData];
             const prevIndex = listData.findIndex(item => item.key === rowKey);
             newData.splice(prevIndex, 1);
+            
             setListData(newData);
 
             Alert.alert(
@@ -121,12 +145,16 @@ export default function SwipeValueBasedUi(props) {
 
     const renderItem = data => (
         <TouchableHighlight
-            onPress={() => console.log('You touched me')}
+            onPress={() => handleClickEvent()}
             style={ styles(props).rowFront }
             underlayColor={'#AAA'}
         >   
             <View style={ styles(props).containerEvent }>            
-                <Image style={ styles(props).img } source={ require("../../../assets/house.jpg") } />
+                <Image style={ styles(props).img } source={
+                    base64Image != '' ? { uri: `data:image/jpg;base64,${base64Image}` }
+                    : require('../../../assets/avatar.jpg')
+                    }
+                 />
                 <View style={ styles(props).data }>
                 <TextInput
                     style={ styles(props).txt }
@@ -145,7 +173,7 @@ export default function SwipeValueBasedUi(props) {
 
     const renderHiddenItem = (data, rowMap) => (
         <View style={styles(props).rowBack}>
-            <Text></Text>
+            <Entypo name="edit" size={25} color="#B33BF6" onPress={handleClickEdit} />
             <TouchableOpacity
                 style={[styles(props).backRightBtn, styles(props).backRightBtnLeft]}
                 onPress={() => closeRow(rowMap, data.item.key)}

@@ -7,7 +7,6 @@ import { Input, SocialIcon  } from 'react-native-elements';
 import Api  from '../Apis/SignIn-SignUp/Api';
 import  {AsyncStorage}  from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
-//import { UserContext } from '../../context/UserContext';
 import {useNetInfo} from "@react-native-community/netinfo";
 import {UserContext} from '../../context/UserContext';
 
@@ -43,12 +42,19 @@ function SignIn({navigation}){
 			
 		};
 		const handleLoginButtonClick = async() =>{
-
+			 
+			  console.log("ok"); 	
 			  if( emailField != '' && passwordField != '' ){
 
-				
+					let token= await AsyncStorage.getItem('token');
+
+					if( token != "" )
+						await AsyncStorage.removeItem('token');
+
+
 					let json= await Api.signIn(emailField,passwordField);
-					
+					console.log(json);
+
 					if( json.status ){
 						
 						await AsyncStorage.setItem('token',json.msg.remember_token);
@@ -91,6 +97,15 @@ function SignIn({navigation}){
 							
 						});
 
+						userDispatch({
+
+							type:'setAvatar',
+							payload:{
+								avatar:json.msg.photo
+							},
+							
+							
+						});
 						
 			  			navigation.navigate('Index');
 						//navigation.dispatch(resetAction);
@@ -99,7 +114,6 @@ function SignIn({navigation}){
 					}else{
 
 						alert(json.msg);
-						navigation.navigate('SignIn'); 
 
 					}
 

@@ -77,7 +77,6 @@ function Profile({navigation}){
                         <Image source={require('../../../assets/profile/arrow.png')} style={styles.iconArrow} />
                </TouchableOpacity>
             </View>
-
             <View style={ styles.btnsContainer}>
                <TouchableOpacity style={styles.btnOptions}
                      onPress={ () => navigation.navigate("ProfilePassword") }>
@@ -88,7 +87,18 @@ function Profile({navigation}){
                         <Image source={require('../../../assets/profile/arrow.png')} style={styles.iconArrow} />
                </TouchableOpacity>
             </View>
-            
+            <View style={ styles.btnsContainer}>
+               <TouchableOpacity style={styles.btnOptions}
+                     onPress={ () => navigation.navigate("ProfileRemove",{
+                        title:'Remover conta',
+                     }) }>
+                    <Image source={require('../../../assets/profile/removeuser.png')} style={styles.icon} />
+                    <Text style={styles.btnText}>Remover conta</Text>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.btnArrow}>
+                        <Image source={require('../../../assets/profile/arrow.png')} style={styles.iconArrow} />
+               </TouchableOpacity>
+            </View>
             </View>
         );
 

@@ -7,7 +7,7 @@ export default{
 
     registerEvent:async (type,status,photos,latitude,longitude,information,animal_id,user_id)=>{
 
-      
+       
         const req = await fetch(`${BASE_API}/events`,{
 
             method: 'POST',
@@ -24,7 +24,7 @@ export default{
 
         const json = await req.json();
        
-        
+ 
         return json;
        
     },
@@ -47,8 +47,7 @@ export default{
 
                     
                 body: formData
-                    //body: JSON.stringify({type,status,latitude,longitude,information,animal_id,user_id,photos,formdata})
-
+                   
         });
 
         const json = await req.json();
@@ -58,13 +57,35 @@ export default{
                             
     },
 
-        
-    
-
     getEvents:async () =>{
 
         const token = await AsyncStorage.getItem('token');
+
         const req =  await fetch(`${BASE_API}/events/get`,{
+
+        method: 'POST',
+        headers:{
+
+            Accept: 'application/json',
+            'Content-Type': 'application/json' 
+
+        },
+
+        body: JSON.stringify({token})
+
+        });
+        
+        const json = await req.json();
+       
+        return json;
+
+    },
+
+        
+    getEventsById:async () =>{
+
+        const token = await AsyncStorage.getItem('token');
+        const req =  await fetch(`${BASE_API}/events/getbyId`,{
 
         method: 'POST',
         headers:{
@@ -83,7 +104,7 @@ export default{
         return json;
 
     },
-    getEventsOptions:async (option) =>{
+    getEventsOptions:async (option,typeOption) =>{
 
         const token = await AsyncStorage.getItem('token');
         const req =  await fetch(`${BASE_API}/events/getOptions`,{
@@ -96,7 +117,7 @@ export default{
 
         },
 
-        body: JSON.stringify({token,option})
+        body: JSON.stringify({token,option,typeOption})
 
         });
         
@@ -132,10 +153,10 @@ export default{
 
     //********************************************************** */
 
-    registerEventResolved:async(user_id,event_id) => {
+    registerEventResolved:async(user_id,user_id_event,event_id,status,type) => {
 
         const token = await AsyncStorage.getItem('token');
-       
+        
         const req =  await fetch(`${BASE_API}/resolvedevents`,{
              
         method: 'POST',
@@ -146,7 +167,7 @@ export default{
 
         },
 
-        body: JSON.stringify({token,event_id,user_id})
+        body: JSON.stringify({token,user_id,user_id_event,event_id,status,type})
 
         });
         
@@ -154,6 +175,56 @@ export default{
        
         return json;
 
-    }
+    },
+
+    UpdateEvent:async(information,status,id_event,type) =>{
+
+        const token = await AsyncStorage.getItem('token');
+       
+        const req =  await fetch(`${BASE_API}/events/update`,{
+             
+        method: 'POST',
+        headers:{
+
+            Accept: 'application/json',
+            'Content-Type': 'application/json' 
+
+        },
+
+        body: JSON.stringify({token,information,status,id_event,type})
+
+        });
+        
+        const json = await req.json();
+       
+        return json;
+
+    
+    },
+    searchEvent:async(search) =>{
+
+        const token = await AsyncStorage.getItem('token');
+       
+        const req =  await fetch(`${BASE_API}/events/searchEvent`,{
+             
+        method: 'POST',
+        headers:{
+
+            Accept: 'application/json',
+            'Content-Type': 'application/json' 
+
+        },
+
+        body: JSON.stringify({token,search})
+
+        });
+        
+        const json = await req.json();
+       
+        return json;
+
+    
+    },
+
 
 };

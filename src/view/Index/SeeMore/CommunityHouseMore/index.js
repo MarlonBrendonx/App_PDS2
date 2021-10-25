@@ -3,6 +3,7 @@ import { Image,View,ImageBackground,Text,TouchableOpacity, TextInput ,Dimensions
 import styles from "./styles";
 import { ScrollView } from 'react-native';
 import Carousel from 'react-native-banner-carousel';
+import HeaderDetailsEvent from '../../../../components/HeaderDetailsEvent';
 
 
 function CommunityHouse_More({route,navigation}) {
@@ -25,6 +26,7 @@ function CommunityHouse_More({route,navigation}) {
     return(
 
             <View style={ styles.container }>
+                 <HeaderDetailsEvent navigation={navigation} />
                   <View style={styles.containerImage}>
                     <Carousel
                         autoplay

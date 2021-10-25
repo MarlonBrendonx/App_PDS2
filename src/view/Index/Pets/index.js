@@ -1,102 +1,83 @@
-import React, { useState, useEffect} from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native";
-import Api  from '../../Apis/SignUpPets/Api';
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity,Image } from "react-native";
-import Header from '../../../components/Header';
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItem,
-} from "@react-navigation/drawer";
-import SignUpPets from "../../SignUpPets";
+import { NavigationActions, StackActions } from 'react-navigation';
+import { useNavigation } from "@react-navigation/native";
 
+const DATA = [
+  {
+    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    title: " Nome:",
+    title2: " Raça:",
+    title3: " Sexo:",
+  },
+  {
+    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+    title: "  Nome:",
+    title2: "  Raça:",
+    title3: "  Sexo:",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: " Nome:",
+    title2: " Raça:",
+    title3: " Sexo:",
+  },
+];
+//const { navigate } = useNavigation();
+const handleLoginButtonClick = (navigation) =>{
 
+  navigation.navigate('SignUpPets');   
 
-//<Image style={ styles.image2 } source={ require("../../../assets/login/login.png") } />
+};
+//<Image style={ styles.image2 } source={ require("../../assets/login/login.png") } />
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    
+    <View>
+    <Text style={[styles.title, textColor,]}>{item.title}</Text>
+    <Text></Text>
+    <Text style={[styles.title, textColor,]}>{item.title2}</Text>
+    <Text></Text>
+    <Text style={[styles.title, textColor,]}>{item.title3}</Text>
+    </View>
+  </TouchableOpacity>
+);
 
-
-function Pets ({navigation}) {
-
-  const [listpets,setListPets] = useState([]);
-	const [loading,setLoading] = useState(false);
-	const [state,setState] = useState(false);
-	
-	useEffect( ()=>{
-		
-		getPets();
-	
-	}, []);
-	
-	const getPets = async ()=>{
-		
-		setLoading(true);
-		setListPets([]);
-	
-		let res= await Api.getPets();
-	   
-		if( res.status ){
-			
-			setListPets(res.msg.data);
-			console.log(res.msg.data);
-		}else{
-	
-			alert("Erro ao buscar os eventos.");
-		}
-		
-		setLoading(false);
-		setState(true);
-	}
-
+const Pets = ({navigation}) => {
   const [selectedId, setSelectedId] = useState(null);
 
- 
-  
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Image style={ styles.image2 } source={ require("../../../assets/login/login.png") } />
-      <View>
-      <Text style={[styles.title, textColor,]}>{"NOME: "+item.name}</Text>
-      <Text></Text>
-      <Text style={[styles.title, textColor,]}>{"SEXO: "+item.sex}</Text>
-      <Text></Text>
-      <Text style={[styles.title, textColor,]}>{"IDADE: "+item.age}</Text>
-      </View>
-    </TouchableOpacity>
-  );
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id_animals === selectedId ? "#6e3b6e" : "#f9c2ff";
-    const color = item.id_animals=== selectedId ? 'white' : 'black';
-    //setSelectedId(item.id),
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
+    const color = item.id === selectedId ? 'white' : 'black';
+
     return (
       <Item
         item={item}
-        onPress={() =>  navigation.navigate('PetsView',
-        {dados : item})}
+        onPress={() => setSelectedId(item.id)}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
     );
   };
-//<Text  style={styles.textTitle} >Meus Pets</Text>
+
   return (
     <ScrollView>
-     
       <View>
-      <Header navigation={navigation} title="Meus Pets" /> 
-        
+        <Text  style={styles.textTitle} >Meus Pets</Text>
 
       </View>
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={listpets}
+          data={DATA}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id_animals}
+          keyExtractor={(item) => item.id}
           extraData={selectedId}
         />
       </SafeAreaView>
       <View>
-      <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('SignUpPets')}>
+      <TouchableOpacity style={styles.btnSubmit} onPress={handleLoginButtonClick(navigation)}>
 				<Text style={styles.submitText}>Cadastrar Pet</Text>
 			</TouchableOpacity>
       </View>

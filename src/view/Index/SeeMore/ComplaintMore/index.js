@@ -5,10 +5,11 @@ import { ScrollView } from 'react-native';
 import Carousel from 'react-native-banner-carousel';
 import Api from '../../../Apis/Map/Api';
 import { UserContext } from '../../../../context/UserContext';
+import HeaderDetailsEvent from '../../../../components/HeaderDetailsEvent';
 
 function Complaint_More({route,navigation}) {
 
-    const { id_event,status,information,images } = route.params;
+    const { StateInsertList,id_event,user_id_event,status,type,information,images,state} = route.params;
     const {state:person} =useContext(UserContext);
 
     const BannerWidth = Dimensions.get('window').width;
@@ -18,36 +19,36 @@ function Complaint_More({route,navigation}) {
     
         return (
             <View key={index}>
-                <Image source={{ uri: `data:image/jpg;base64,${images}` }} style={styles.img}  />
+                <Image source={ images ?  { uri: `data:image/jpg;base64,${images}` } 
+                : require("../../../../assets/avatar.jpg") } style={styles.img}  />
             </View>
         );
         
     }
 
-    const handleresolveevent = async () =>{
+    const handleclickevent = async () =>{
 
-        let res= await Api.registerEventResolved(person.id,id_event);
-       
-        if( res.status ){
-            
-            Alert.alert(
-                "O evento foi selecionado para resolução",
-                "O dono do evento será notificado em breve..Aguarde ",
-                [
-                  { text: "OK", onPress: () => console.log("Ok Pressed") }
-                ]
-            );
-            
-        }else{
+        if( status === "Em andamento" ){
 
-            alert("Error");
-        }
+         Alert.alert(
+            "Opps!",
+            "O evento já foi solicitado para solução por outro usuário, ainda deseja prosseguir ?",
+            [
+              {
+                text: "Cancelar",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { text: "OK", onPress: () => handleresolveEvent() }
+              
+            ]
+         );
 
-    }
-
-
-    const handleclickevent = () => {
+        }else{ handleresolveEvent(); }
         
+    }
+    const handleresolveEvent = async () =>{    
+
         Alert.alert(
             "Deseja resolver a denúncia ?",
             "",
@@ -57,19 +58,43 @@ function Complaint_More({route,navigation}) {
                 onPress: () => console.log("Cancel Pressed"),
                 style: "cancel"
               },
-              { text: "OK", onPress: () => handleresolveevent() }
+              { text: "OK", onPress: () => ResolveEvent() }
             ]
         );
 
-    };
+    }
 
+    const ResolveEvent = async () => {
 
+            let res= await Api.registerEventResolved(person.id,user_id_event,id_event,status,type);
+        
+            if( res.status ){
+                
+                Alert.alert(
+                    "O evento foi selecionado para resolução",
+                    "O dono do evento será notificado em breve..Aguarde ",
+                    [
+                    { text: "OK", onPress: () => navigation.goBack() }
+                    ]
+                );
 
+                StateInsertList();
+                
+            }else{
+
+                alert("Não foi possível solicitar a solução do evento.");
+            }
+
+    }
+
+             
     return(
       
             <View style={ styles.container }>
+                  <HeaderDetailsEvent navigation={navigation} />
                   <View style={styles.containerImage}>
                     <Carousel
+                        useNativeDriver={true}
                         autoplay
                         autoplayTimeout={5000}
                         loop
@@ -100,7 +125,7 @@ function Complaint_More({route,navigation}) {
                         </View>
                      </View>
                      <View style={styles.containerBtn}>
-                        <TouchableOpacity style={styles.btnResolve} onPress={handleclickevent}>
+                        <TouchableOpacity style={styles.btnResolve} disabled={state} onPress={handleclickevent}>
                             <Text style={{color:'#fff',fontWeight:'bold'}}>Resolver</Text>
                         </TouchableOpacity>
                      </View>   

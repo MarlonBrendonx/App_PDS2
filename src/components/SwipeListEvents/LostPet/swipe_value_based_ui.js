@@ -14,6 +14,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import styles from "./styles";
 import Api from "../../../view/Apis/Map/Api";
 import {UserContext} from "../../../context/UserContext";
+import { Entypo } from "@expo/vector-icons";
 
 const rowSwipeAnimatedValues = {};
 Array(1)
@@ -25,6 +26,7 @@ Array(1)
 export default function SwipeValueBasedUi(props) {
 
     const { state:person }=useContext(UserContext);
+    const base64Image=props.data.images[0];
 
     const [listData, setListData] = useState(
         Array(1)
@@ -38,6 +40,31 @@ export default function SwipeValueBasedUi(props) {
         }
     };
 
+    const handleClickEvent= async () =>{
+      
+        props.navigation.navigate("LostPet_More",{
+                   
+            StateInsertList: null,
+            dataEvent:props.data,
+            images:props.data.images,
+            status:props.data.status,
+            type:props.data.type,
+            state:true
+
+        });
+    
+    }
+
+    const handleClickEdit= async () =>{
+
+        props.navigation.navigate("LostPet",{
+
+            item:props.data,
+            Refresh:props.Refresh,
+
+        });
+
+    }
     const removeEvent = async (rowMap, rowKey)=>{
    
         let res= await Api.removeEvent(props.data.id_event,person.id);
@@ -118,15 +145,20 @@ export default function SwipeValueBasedUi(props) {
 
     const renderItem = data => (
         <TouchableHighlight
-            onPress={() => console.log('You touched me')}
+            onPress={() => handleClickEvent()}
             style={ styles(props).rowFront }
             underlayColor={'#AAA'}
         >   
             <View style={ styles(props).containerEvent }>            
-                <Image style={ styles(props).img } source={ require("../../../assets/Events/cat.png") } />
+                <Image style={ styles(props).img } source={
+
+                base64Image != '' ? { uri: `data:image/jpg;base64,${base64Image}` }
+                : require('../../../assets/avatar.jpg')
+                }
+/>
                 <View style={ styles(props).data }>
                     <Text style={ styles(props).txt }>Nome: {props.data.name}</Text>
-                    <Text style={ styles(props).txt }>Raça:  {props.color}</Text>
+                    <Text style={ styles(props).txt }>Raça:  Vira-Lata</Text>
                     <Text style={ styles(props).txt }>Status: {props.data.status}</Text>
                 </View>
             </View>
@@ -135,7 +167,7 @@ export default function SwipeValueBasedUi(props) {
 
     const renderHiddenItem = (data, rowMap) => (
         <View style={styles(props).rowBack}>
-            <Text></Text>
+            <Entypo name="edit" size={25} color="#B33BF6" onPress={handleClickEdit}/>
             <TouchableOpacity
                 style={[styles(props).backRightBtn, styles(props).backRightBtnLeft]}
                 onPress={() => closeRow(rowMap, data.item.key)}

@@ -16,14 +16,21 @@ import * as ImagePicker from 'expo-image-picker';
 
 function Complaint({route,navigation}) {
 
-   const { coordinate,type,StateInsertList } = route.params;
+   const { coordinate,type,StateInsertList,item } = route.params;
     
     return(
       
             <View style={ styles.container }>
               <Header navigation={navigation} title="Denúncias" />
               <ScrollView >
-                <EventBody color="red"  navigation={navigation} coordinate={coordinate} type={type} StateInsertList={StateInsertList} />
+                <EventBody 
+                  color="red"  
+                  navigation={navigation} 
+                  coordinate={coordinate} 
+                  type={type} 
+                  StateInsertList={StateInsertList}
+                  item={item}
+                />
               </ScrollView>        
            </View>         
     );

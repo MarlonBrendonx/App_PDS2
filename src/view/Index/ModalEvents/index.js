@@ -38,6 +38,7 @@ function ModalEvents({ StateInsertList,isVisible, onClose,navigation,coordinate 
                         width={80}
                         height={80}
                         left={10}
+                        item={null}
                     />
                      
                     <ContainerEvent 
@@ -52,6 +53,7 @@ function ModalEvents({ StateInsertList,isVisible, onClose,navigation,coordinate 
                         StateInsertList={StateInsertList} 
                         width={70}
                         height={80}
+                        item={null}
                     />
                     <ContainerEvent
                         title="Denúncia"
@@ -65,6 +67,7 @@ function ModalEvents({ StateInsertList,isVisible, onClose,navigation,coordinate 
                         StateInsertList={StateInsertList} 
                         width={120}
                         height={120}
+                        item={null}
                     />
                 </View>
                

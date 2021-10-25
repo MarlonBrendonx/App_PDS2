@@ -1,7 +1,7 @@
 export const initialState = {
      
      id:'', 
-     avatar:'',
+     avatar:"",
      name:"",
      email:"",
      phone:"",

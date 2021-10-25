@@ -17,7 +17,7 @@ import Api from "../../Apis/Map/Api";
 
 function CommunityHouse({route,navigation }) {
 
-    const { coordinate,type,StateInsertList }=route.params;
+    const { coordinate,type,StateInsertList,item }=route.params;
     
    
     return(
@@ -25,7 +25,14 @@ function CommunityHouse({route,navigation }) {
             <View style={ styles.container }>
               <Header navigation={navigation} title="Casinhas comunitárias" />
               <ScrollView >
-                  <EventBody color="#5cc5c0"  coordinate={coordinate}  type={type} StateInsertList={StateInsertList} navigation={navigation}/>
+                  <EventBody 
+                        color="#5cc5c0"
+                        coordinate={coordinate}
+                        type={type}
+                        StateInsertList={StateInsertList}
+                        navigation={navigation}
+                        item={item}
+                   />
               </ScrollView>        
            </View>         
     );

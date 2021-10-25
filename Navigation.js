@@ -11,6 +11,7 @@ import Index from "./src/view/Index";
 import Profile from "./src/view/Index/Profile";
 import ProfileFields from "./src/view/Index/ProfileFields";
 import ProfilePassword from "./src/view/Index/ProfileFields/ProfilePassword";
+import ProfileRemove from "./src/view/Index/ProfileFields/ProfileRemove";
 import Preloading from "./src/view/Preloading";
 import NoInternet  from "./src/view/NoInternet";
 import LostPet from "./src/view/Index/LostPet";
@@ -21,7 +22,7 @@ import NoLocation from "./src/view/NoLocation";
 import LostPet_More from "./src/view/Index/SeeMore/LostPetMore";
 import CommunityHouse_More from "./src/view/Index/SeeMore/CommunityHouseMore";
 import Complaint_More from "./src/view/Index/SeeMore/ComplaintMore";
-import {LogBox} from 'react-native';
+import LogoutApp from "./src/view/LogoutApp";
 import SignUpPets from "./src/view/SignUpPets";
 import Donation from "./src/view/Donation";
 import Pets from "./src/view/Index/Pets";
@@ -31,7 +32,6 @@ import PetsView from "./src/view/PetsView";
 import Adoption from "./src/view/Index/Adoption";
 import AdoptionView from "./src/view/AdoptionView";
 
-LogBox.ignoreLogs(['Warning: ...']);
 const Stack = createStackNavigator();
 
 const optionsHeader = () => ({
@@ -47,24 +47,13 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        
         <Stack.Screen name="Preloading" component={Preloading} options={optionsHeader} />
-        <Stack.Screen name="Donation" component={Donation} options={optionsHeader} />
-        <Stack.Screen name="Pets" component={Pets} options={optionsHeader} />
-        <Stack.Screen name="SignUpPets" component={SignUpPets} options={optionsHeader} />
-        <Stack.Screen name="DonationView" component={DonationView} options={optionsHeader} />
-        <Stack.Screen name="ModalDonation" component={ModalDonation} options={optionsHeader} />
-        <Stack.Screen name="PetsView" component={PetsView} options={optionsHeader} />
-        <Stack.Screen name="Adoption" component={Adoption} options={optionsHeader} />
-        <Stack.Screen name="AdoptionView" component={AdoptionView} options={optionsHeader} />
 
         <Stack.Screen
           name="SignIn"
           component={SignIn}
           options={optionsHeader}
-         
-        />    
-
+        /> 
 
         <Stack.Screen
           name="SignUp"
@@ -96,6 +85,11 @@ export default function Navigation() {
         <Stack.Screen
           name="ProfilePassword"
           component={ProfilePassword}
+          options={{ headerShown: false, headerTitleAlign: "center" }}
+        />
+        <Stack.Screen
+          name="ProfileRemove"
+          component={ProfileRemove}
           options={{ headerShown: false, headerTitleAlign: "center" }}
         />
         <Stack.Screen
@@ -143,6 +137,19 @@ export default function Navigation() {
           component={Complaint_More}
           options={optionsHeader}
         />
+        <Stack.Screen
+          name="LogoutApp"
+          component={LogoutApp}
+          options={optionsHeader}
+        />
+        <Stack.Screen name="Donation" component={Donation} options={optionsHeader} />
+        <Stack.Screen name="Pets" component={Pets} options={optionsHeader} />
+        <Stack.Screen name="SignUpPets" component={SignUpPets} options={optionsHeader} />
+        <Stack.Screen name="DonationView" component={DonationView} options={optionsHeader} />
+        <Stack.Screen name="ModalDonation" component={ModalDonation} options={optionsHeader} />
+        <Stack.Screen name="PetsView" component={PetsView} options={optionsHeader} />
+        <Stack.Screen name="Adoption" component={Adoption} options={optionsHeader} />
+        <Stack.Screen name="AdoptionView" component={AdoptionView} options={optionsHeader} />
        
         
       </Stack.Navigator>

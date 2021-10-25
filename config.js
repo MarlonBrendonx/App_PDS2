@@ -1,1 +1,1 @@
-global.BASE_API='http://14c7-177-185-102-253.ngrok.io/api';
+global.BASE_API='http://739e-191-243-70-226.ngrok.io/api';
