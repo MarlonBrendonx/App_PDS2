@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "FirstProject",
-    "slug": "FirstProject",
+    "name": "MyPet",
+    "slug": "MyPet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/splash.png",
@@ -17,15 +17,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "packge.app"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "packge.app"
+      "package": "com.MyPet.MyPet",
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyBMkj7n5a6kjqKh-vomgBjzXb5YrTkig30" }   
+     }
     },
     "web": {
       "favicon": "./assets/favicon.png"

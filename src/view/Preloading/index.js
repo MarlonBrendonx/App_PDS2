@@ -8,14 +8,6 @@ import Api from "../../view/Apis/SignIn-SignUp/Api";
 
 function Preload({navigation,route}){
 
-       /*
-       const resetAction = StackActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'Index' })],
-        });
-        */
-
-   
        const {dispatch:userDispatch} =useContext(UserContext);
 
        let refresh= route.params;
@@ -23,9 +15,13 @@ function Preload({navigation,route}){
        const checkToken = async ()=>{
 
        const token = await AsyncStorage.getItem('token');
+ 
+       if( token === null ){
+           
+                navigation.navigate('SignIn');
 
-       if( token != null ){
-            
+        }else{
+
                 let json= await Api.checkToken(token);
                 
                 if( json.status ){
@@ -81,17 +77,14 @@ function Preload({navigation,route}){
                     });
                     
                     navigation.navigate("Index");
-                    
-                }else{
 
-                    navigation.navigate('SignIn');
+                }else{
+                    navigation.navigate("SignIn");
                 }
 
 
-            }else{
-
-                navigation.navigate('SignIn');
             }
+
 
         }
 
@@ -108,7 +101,7 @@ function Preload({navigation,route}){
             checkToken();
             
         },[,refresh]);
-
+    
         return (
             
             <View style={ styles.container }>

@@ -33,7 +33,7 @@ function CalloutMap(props) {
                     <Image style={styles(props).avatar} source={{ uri: `data:image/jpg;base64,${base64Image}` }} />
                     <View>
                       <Text style={styles(props).devbio}>Nome: {props.data.name}</Text>
-                      <Text style={styles(props).devtest}>Raça: Vira-Lata</Text>
+                      <Text style={styles(props).devtest}>Raça:{props.data.breed}</Text>
                       <View style={{flexDirection:'row',paddingTop:10}}>
                         <Text >Status: </Text>
                         <Text style={{ fontWeight:'bold',color:'black' }}>{props.data.status}</Text>

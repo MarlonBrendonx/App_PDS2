@@ -14,6 +14,8 @@ import CalloutMap from "../../../components/Callouts/CalloutLostPet";
 import CalloutMap_2 from '../../../components/Callouts/CalloutCommunityHouse';
 import CalloutMap_3 from '../../../components/Callouts/CalloutComplaint';
 import Api  from '../../Apis/Map/Api';
+import {useNetInfo} from "@react-native-community/netinfo";
+
 
 function MapScreen({ navigation,route }) {
 
@@ -32,9 +34,14 @@ function MapScreen({ navigation,route }) {
     const [qtdMessage,setqtdMessage]=useState(0);
     const [grantedPos, setGranted]=useState(false);
     const [search,setSearch]=useState(null);
-    
 
-    let refresh= route.params;
+    const refresh= route.params;
+
+    const netInfo = useNetInfo();
+
+    if( netInfo.isConnected == false ){
+            navigation.navigate("NoInternet");
+    }
 
     const setStateInsert = () =>{
         setStateInsertList(true);
@@ -66,8 +73,29 @@ function MapScreen({ navigation,route }) {
 
  
     const handleLocationFinder = async () =>{
-        
-       
+
+                const { granted } = await requestForegroundPermissionsAsync();
+
+                if( granted ){
+
+                    const { coords } = await getCurrentPositionAsync({
+                        enableHighAccuracy: true,
+                    });
+                    
+                    const { latitude, longitude  } = coords;
+                    setCurrentRegion({
+
+                        latitude,
+                        longitude,
+                        latitudeDelta:0.04,
+                        longitudeDelta:0.04,
+
+                    })
+
+
+                }
+
+  
     }
 
     async function loadInitialPosition(){
@@ -224,8 +252,8 @@ function MapScreen({ navigation,route }) {
         <MapView initialRegion={currentRegion} style={ styles.map } 
             onPress={toggleModalEvents} 
             showsMyLocationButton={false} 
-            showsUserLocation={false}
-            
+            showsUserLocation={true}
+
         >
         {state && listevents.map((item, k)=>{
             

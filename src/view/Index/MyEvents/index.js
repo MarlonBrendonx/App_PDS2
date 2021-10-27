@@ -148,11 +148,9 @@ function MyEvents({route,navigation}) {
             <View style={ styles.containerBody }>
             <View style={styles.form}>
             <View style={styles.searchSection}>    
-
                 <TouchableOpacity style={styles.btnSettings} onPress={searchEvents} >
                     <Icon style={styles.searchIcon} name="search" size={20} color="#000"/>
                 </TouchableOpacity>
-
                 <TextInput
                     style={styles.input}
                     placeholder="Buscar"

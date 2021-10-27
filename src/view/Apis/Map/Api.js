@@ -177,7 +177,7 @@ export default{
 
     },
 
-    UpdateEvent:async(information,status,id_event,type) =>{
+    UpdateEvent:async(information,status,id_event,type,id_animal) =>{
 
         const token = await AsyncStorage.getItem('token');
        
@@ -191,7 +191,7 @@ export default{
 
         },
 
-        body: JSON.stringify({token,information,status,id_event,type})
+        body: JSON.stringify({token,information,status,id_event,type,id_animal})
 
         });
         

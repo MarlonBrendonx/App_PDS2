@@ -110,7 +110,8 @@ function EventBody(props) {
             information,
             null,
             props.item.id_event,
-            props.item.type
+            props.item.type,
+            null
           
           );
 

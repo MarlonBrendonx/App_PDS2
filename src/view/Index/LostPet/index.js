@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import {UserContext} from "../../../context/UserContext";
 import Api from "../../Apis/Map/Api";
+import ApiPet from "../../Apis/Pets/Api";
 import ModalPets  from './ModalPets';
 
 function LostPet({ route,navigation }) {
@@ -26,8 +27,13 @@ function LostPet({ route,navigation }) {
     const [animal_id,setAnimal_ID] = useState(null);
     const [stateError,setStateError] = useState(false);
     const [isModalVisible,setisModalVisible] = useState(false);
+    const [listPets,setListPets]=useState([]);
+    const [nameAnimal,setnameAnimal]=useState("Meu Pet");
+   
 
     const { state:person }=useContext(UserContext);
+
+    const { item,Edit } = route.params;
 
     const uploadImages = async(form)=>{
 
@@ -36,7 +42,7 @@ function LostPet({ route,navigation }) {
         );
 
         return json.status;
-   }
+    }
 
     let openImagePickerAsync = async () => {
 
@@ -61,15 +67,48 @@ function LostPet({ route,navigation }) {
 
     const getAnimals = async () => {
 
-      
+        let json = await ApiPet.getPetsById(person.id);
+
+        if( json.status ){
+
+            setListPets(json.msg);
+            
+        }else{
+
+            alert("Erro ao buscar os pets");
+        }
 
     }
+
+    useEffect( ()=>{
+
+        getAnimals();
+
+        if( Edit ){
+            setnameAnimal(item.name);
+            setAnimal_ID(item.id_animal);
+            setSelectedValue(item.status);
+            setInformation(item.information);
+        }
+
+    },[]);
+
+    const setAnimalId = (id_animal,name) =>{
+
+        setAnimal_ID(id_animal);
+        setnameAnimal(name);
+       
+
+    }
+
+    const toggleModal = () => {
+        setisModalVisible(!isModalVisible);
+    };
     
     const handleRegisterButtonClick = async() =>{
 
-        setAnimal_ID(3);
         
-        if( selectedImage.length !=0  && information != '' && coordinate != null  && person.id != null ){
+        if( selectedImage.length !=0 && animal_id != null && information != '' && coordinate != null  && person.id != null ){
 
 
             let json = await Api.registerEvent(
@@ -80,7 +119,7 @@ function LostPet({ route,navigation }) {
                 coordinate.latitude,
                 coordinate.longitude,
                 information,
-                3,
+                animal_id,
                 person.id
                 
             );
@@ -139,9 +178,38 @@ function LostPet({ route,navigation }) {
 
     }
 
-    const toggleModal = () => {
-        setisModalVisible(!isModalVisible);
-    };
+    const handleUpdateButtonClick = async() =>{
+
+        if( status != null && animal_id != null && information != '' && item != null  && person.id != null ){
+            
+            let json = await Api.UpdateEvent(
+  
+              information,
+              status,
+              item.id_event,
+              item.type,
+              animal_id
+            
+            );
+  
+            if( json.status ){
+  
+              alert(json.msg);
+              
+              navigation.navigate("MyEvents",{refresh:true});
+  
+            }else{
+  
+              alert(json.msg);
+              
+            }
+          
+            
+        }
+
+    }
+
+   
 
     return(
       
@@ -155,44 +223,50 @@ function LostPet({ route,navigation }) {
                             <Text style={ styles.txtTitle2 }>Evento!</Text>
                         </View>
                         <View style={ styles.body }>
-                            
                             <View style={ styles.containerOptions } >
-                            <ModalPets isVisible={isModalVisible} onClose={toggleModal} />
+                            <ModalPets isVisible={isModalVisible} onClose={toggleModal} list={listPets} AnimalId={setAnimalId} />
                             <TouchableOpacity onPress={toggleModal}>
                                 <View style={ styles.optionsEvent }>
-                                        <Text style={ styles.Optiontitle }>Meu Pet</Text>
+                                        <Text style={ styles.Optiontitle }>{nameAnimal}</Text>
                                         <Ionicons name="open-outline" size={24} color="black" /> 
                                 </View>
                             </TouchableOpacity>
-                            
                             <View style={ styles.containerOptions }>
                                 <Text style={ styles.txtOption }>Informações</Text>
                                 <TextInput
                                     style={styles.textArea}
                                     underlineColorAndroid="transparent"
-                                    placeholder="Informe alguns detalhes "
+                                    placeholder={ Edit && item ? item.information : "Informe alguns detalhes " }
                                     placeholderTextColor="grey"
                                     numberOfLines={10}
                                     multiline={true}
                                     onChangeText={t=>setInformation(t)}
                                     />
                             </View>
-    
                             </View>
                             <View >
-                                <TouchableOpacity style={ styles.btnAddPhoto } onPress={openImagePickerAsync} >
+                                <TouchableOpacity style={ Edit && item ? { display:'none'}: styles.btnAddPhoto } onPress={openImagePickerAsync} >
                                    <Image 
 
-                                        style={{ height:24,width:24}}
+                                        style={{ height:24,width:24 }}
                                         source={ require("../../../assets/Events/camera.png") }
                                    
                                    />
                                 </TouchableOpacity>
+                                <Text style={ Edit && item ? { marginTop:10,left:10 }: {display:'none'}}>Status:</Text>
+                                <Picker
+                                    selectedValue={status}
+                                    style={ Edit && item   ? { height: 50, width: 190 }: { display:'none' }  }
+                                    onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                                >
+                                    <Picker.Item label="Não resolvido" value="Não resolvido" />
+                                    <Picker.Item label="Em andamento" value="Em andamento" />
+                                    <Picker.Item label="Resolvido" value="Resolvido" />
+                                </Picker>
                                 <View style={styles.containerImage}>
                                     <ScrollView horizontal={true}>
                                         
                                             {
-
                                             selectedImage.map( localUri =>   
                                             <Image
                                                 style={ styles.imgsContainer }
@@ -205,12 +279,12 @@ function LostPet({ route,navigation }) {
                                 </View>
                              </View>
                              <View style={{ width:'95%',paddingTop:10  }}>
-                                <TouchableOpacity style={ styles.btnAddEvent } onPress={handleRegisterButtonClick}  >
-                                    <Text style={{ color:'white' }}>Adicionar evento</Text> 
+                                <TouchableOpacity style={ styles.btnAddEvent } onPress={ Edit && item ? handleUpdateButtonClick : handleRegisterButtonClick}  >
+                                    <Text style={{ color:'white' }}>{ Edit && item ? "Salvar Alteração"  : "Adicionar evento" }</Text> 
                                     <Image style={ styles.iconButtonsubmit } source={require("../../../assets/login/paw.png")} />
                                 </TouchableOpacity>
                              </View>
-                        </View>
+                        </View>  
                     </View>
                 </BackgroundImage>
                 </ScrollView>

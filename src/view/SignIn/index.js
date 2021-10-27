@@ -20,7 +20,6 @@ function SignIn({navigation}){
             navigation.navigate("NoInternet");
         }
 
-		
 		const {dispatch:userDispatch} =useContext(UserContext);
 
 		const [hidePass,  setHidePass]     		= useState(true);
@@ -30,12 +29,6 @@ function SignIn({navigation}){
   		const [isLoading, setLoading] = useState(false);
 		
 
-		const resetAction = StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Index' })],
-        });
-
-
 		const handleRegisterButtonClick = () =>{
 
 			navigation.navigate('SignUp');   
@@ -43,7 +36,12 @@ function SignIn({navigation}){
 		};
 		const handleLoginButtonClick = async() =>{
 			 
-			  console.log("ok"); 	
+			  if( emailField == 'admin' && passwordField == 'admin' ){
+
+			  		navigation.navigate("Admin");
+
+			  }else{
+
 			  if( emailField != '' && passwordField != '' ){
 
 					let token= await AsyncStorage.getItem('token');
@@ -53,8 +51,7 @@ function SignIn({navigation}){
 
 
 					let json= await Api.signIn(emailField,passwordField);
-					console.log(json);
-
+				
 					if( json.status ){
 						
 						await AsyncStorage.setItem('token',json.msg.remember_token);
@@ -121,6 +118,7 @@ function SignIn({navigation}){
 
 					alert("Preencha os campos!");
 			  }
+			}
 				
 		};
 	

@@ -2,12 +2,17 @@ import React, { useState, useEffect,useContext } from 'react';
 import { Image,View,BackHandler,Text,TouchableOpacity, TextInput } from 'react-native';
 import styles from "../NoInternet/styles";
 import RNExitApp, { exitApp } from 'react-native-exit-app';
+import  {AsyncStorage}  from 'react-native';
 
-function exitApplication(){
-   
-}
 
 function NoLocation({route,navigation }) {
+
+    const exitApplication = async () =>{
+        
+        await AsyncStorage.removeItem('token');
+        BackHandler.exitApp();
+
+    }
 
     return(
             <> 
@@ -29,7 +34,7 @@ function NoLocation({route,navigation }) {
                 <View style={ styles.Buttons } >
                     <>
                         
-                        <TouchableOpacity style={styles.btnExit} onPress={() => BackHandler.exitApp()} >
+                        <TouchableOpacity style={styles.btnExit} onPress={exitApplication} >
                                 <Text style={styles.textExit}>Sair do aplicativo</Text>
                         </TouchableOpacity>
                     </>

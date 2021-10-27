@@ -58,10 +58,8 @@ export default function SwipeValueBasedUi(props) {
     const handleClickEdit= async () =>{
 
         props.navigation.navigate("LostPet",{
-
             item:props.data,
-            Refresh:props.Refresh,
-
+            Edit:true
         });
 
     }
@@ -152,13 +150,13 @@ export default function SwipeValueBasedUi(props) {
             <View style={ styles(props).containerEvent }>            
                 <Image style={ styles(props).img } source={
 
-                base64Image != '' ? { uri: `data:image/jpg;base64,${base64Image}` }
-                : require('../../../assets/avatar.jpg')
-                }
-/>
+                    base64Image != '' ? { uri: `data:image/jpg;base64,${base64Image}` }
+                    : require('../../../assets/avatar.jpg')
+                    }
+                />
                 <View style={ styles(props).data }>
                     <Text style={ styles(props).txt }>Nome: {props.data.name}</Text>
-                    <Text style={ styles(props).txt }>Raça:  Vira-Lata</Text>
+                    <Text style={ styles(props).txt }>Raça: {props.data.breed}</Text>
                     <Text style={ styles(props).txt }>Status: {props.data.status}</Text>
                 </View>
             </View>

@@ -31,6 +31,7 @@ import ModalDonation from "./src/view/Index/ModalDonation";
 import PetsView from "./src/view/PetsView";
 import Adoption from "./src/view/Index/Adoption";
 import AdoptionView from "./src/view/AdoptionView";
+import Admin from "./src/view/Admin";
 
 const Stack = createStackNavigator();
 
@@ -69,7 +70,7 @@ export default function Navigation() {
         <Stack.Screen
           name="Index"
           component={Index}
-          options={{ headerShown: false, headerTitleAlign: "center" }}
+          options={{ headerShown: false, headerTitleAlign: "center"   }}
         />
         <Stack.Screen
           name="Profile"
@@ -140,6 +141,11 @@ export default function Navigation() {
         <Stack.Screen
           name="LogoutApp"
           component={LogoutApp}
+          options={optionsHeader}
+        />
+        <Stack.Screen
+          name="Admin"
+          component={Admin}
           options={optionsHeader}
         />
         <Stack.Screen name="Donation" component={Donation} options={optionsHeader} />

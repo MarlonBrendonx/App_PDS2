@@ -3,31 +3,46 @@ import { View,Button,TextInput,TouchableOpacity} from 'react-native';
 import styles from './styles';
 import { Input,Text  } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Header from "../../../../components/Header";
+import Header from "../../components/Header";
 
 
-function ProfileRemove({props,navigation}){
+function Admin({props,navigation}){
 
-        const [hidePass,  setHidePass] = useState(true);
+        const [url,setURL]=useState("");
+
+        const handleLinkButtonClick = () =>{
+            
+            if( url != "" ){
+
+                BASE_API=url+'/api';
+              
+
+            }else{
+
+                alert("Informe a URL!");
+            }
+
+
+        };
             
         return (
             <View style={ styles.container }>
             
-                <Header navigation={navigation} title="Alterar Senha" />
+                <Header navigation={navigation} title="Admin" />
 
                 <View style={ styles.body }>
 
                 <TextInput
                     style={styles.inputText }
-                    placeholder="Senha atual"
+                    placeholder="URL"
                     underlineColorAndroid="transparent"
-                    secureTextEntry={hidePass ? true : false}
+                    onChangeText={ t => setURL(t) }
                     
                     
                 />
                 
-                <TouchableOpacity style={ styles.btnChange }>
-                    <Text style={{  color:"#FFF" }}> Definir nova senha </Text>
+                <TouchableOpacity style={ styles.btnChange } onPress={handleLinkButtonClick}>
+                    <Text style={{  color:"#FFF" }}> Inserir link </Text>
                 </TouchableOpacity>
                
                 </View>
@@ -38,4 +53,4 @@ function ProfileRemove({props,navigation}){
 
 }
 
-export default ProfileRemove;
+export default Admin;

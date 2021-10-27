@@ -22,6 +22,7 @@ export default{
         const json = await req.json();
 
  
+
         return json;
 
     },
@@ -73,33 +74,6 @@ export default{
 
         return json;
 
-    },
-    redfinePass:async (passwd,newpasswd) =>{
-
-        const token = await AsyncStorage.getItem('token');
-
-        const req = await fetch(`${BASE_API}/users/redfinepass`,{
-
-            method: 'POST',
-            headers:{
-
-                Accept: 'application/json',
-                'Content-Type': 'application/json' 
-
-            },
-
-            body: JSON.stringify({token,passwd,newpasswd})
-
-        });
-
-        const json = await req.json();
-
- 
-
-        return json;
-
-    },
-
-
+    }
 
 };

@@ -115,10 +115,11 @@ function LostPetMore({route,navigation}) {
                   </View>
                   <View style={styles.body}>
                      <ScrollView horizontal={true} style={styles.atributes}>
-                           <AtributesEvents title="Nome" field={dataEvent.name} />
-                           <AtributesEvents title="Sexo" field={dataEvent.sex} />
-                           <AtributesEvents title="Personalidade" field={dataEvent.personality} />
-                           
+                           <AtributesEvents title="Nome"    field={dataEvent.name} />
+                           <AtributesEvents title="Sexo"    field={dataEvent.sex} />
+                           <AtributesEvents title="Raça"    field={dataEvent.breed} />
+                           <AtributesEvents title="Espécie" field={dataEvent.species} />
+                           <AtributesEvents title="Idade"   field={dataEvent.age} />
                      </ScrollView>
                      <ScrollView >
                         <View style={styles.info}>

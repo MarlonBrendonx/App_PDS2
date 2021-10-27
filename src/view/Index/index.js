@@ -102,7 +102,7 @@ const DrawerContent = ({ navigation }) => {
     {
       id: 5,
       name: "Doações",
-      action: "Donation",
+      action: "DonationView",
       icon: <Image source={icondoacoes} style={{ width:24,height:24 }} />
     },
     {

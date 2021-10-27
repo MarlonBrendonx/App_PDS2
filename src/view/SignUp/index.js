@@ -5,20 +5,36 @@ import  styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, SocialIcon  } from 'react-native-elements';
 import Api  from '../Apis/SignIn-SignUp/Api';
+import ErrorMsg from '../../components/ErrorField';
 
 function SignUp({navigation}){
         
         const [hidePass, setHidePass] = useState(true);
+		const [hidePass2, setHidePass2] = useState(true);
 		const [nameField, setNameField] = useState('');
 		const [emailField, setEmailField] = useState('');
 		const [phoneField, setPhoneField] = useState('');
 		const [passwordField, setPasswordField] = useState('');
 		const [passwordConfirmField, setPasswordConfirmField] = useState('');
-	
+		const [stateError,setStateError]=useState([]);
 		
+		
+		const requireFields = () => {
+
+			if( nameField == "" || ! isNaN(nameField) || nameField.length <=1 ){
+				return (<ErrorMsg msg="Campo inválido (Somente letras, pelo menos 3 caracteres)"/>);
+			}
+			if( emailField == "" ){
+				setStateError((stateError)=>[...stateError,{ emailError:"Campo inválido (Ex: usuario@gmail.com)" }]);
+				
+			}
+			
+		}
+
+
         const handleRegisterButtonClick = async() =>{
 
-		
+			
 			if( nameField != '' && emailField != '' && phoneField != '' && passwordField !='' ){
 				if( passwordField != passwordConfirmField ){
 
@@ -82,9 +98,10 @@ function SignUp({navigation}){
                 <Text>Crie uma uma conta</Text>
 
             <View style={styles.containerInputs}>  
+
 				<Input
 					style={styles.input}
-					placeholder='Nome'
+					placeholder='Nome ( Ex: Maria,José )'
 					leftIcon={
 						<Icon
 							name='user'
@@ -94,10 +111,13 @@ function SignUp({navigation}){
 					}
 					onChangeText={t=>setNameField(t)}
 				/>
+				<View>
+				
+				</View>
 
 			<Input
 				style={styles.input}
-				placeholder='Email'
+				placeholder='Email ( Ex: usuario@gmail.com )'
 				leftIcon={
 					<Icon
 						name='envelope'
@@ -108,11 +128,15 @@ function SignUp({navigation}){
 				onChangeText={t=>setEmailField(t)}
 				
 			/>
-
+			<View>
+				
+				</View>
+	
 			<Input
 
 				style={styles.input}
-				placeholder='Telefone'
+				placeholder='Telefone (Ex: 88313498 )'
+				type="number"
 				leftIcon={
 					<Icon
 						name='phone'
@@ -149,7 +173,7 @@ function SignUp({navigation}){
 				style={styles.input}
 				placeholder='Confirme sua senha'
 				autoCorrect={false}
-				secureTextEntry={hidePass ? true : false}
+				secureTextEntry={hidePass2 ? true : false}
 				leftIcon={
 					<Icon
 						name='lock'
@@ -162,7 +186,7 @@ function SignUp({navigation}){
 						name={hidePass ? 'eye-slash' : 'eye'}
 						size={20}
 						color="grey"
-						onPress={() => setHidePass(!hidePass)}
+						onPress={() => setHidePass2(!hidePass2)}
 					/>
 				}
 				onChangeText={t=>setPasswordConfirmField(t)}
