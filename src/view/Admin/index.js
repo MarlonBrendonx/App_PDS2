@@ -15,7 +15,8 @@ function Admin({props,navigation}){
             if( url != "" ){
 
                 BASE_API=url+'/api';
-              
+                alert("Url inserida!");
+                navigation.navigate("SignIn");
 
             }else{
 
