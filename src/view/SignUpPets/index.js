@@ -1,14 +1,17 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState,useEffect,useContext} from 'react';
 import { View,KeyboardAvoidingView,Image
 ,TouchableOpacity,Text,ScrollView} from 'react-native';
 import  styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, SocialIcon  } from 'react-native-elements';
 import Api  from '../Apis/SignUpPets/Api';
+import Header from "../../components/Header";
+import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from 'react-native';
 //import { StatusBar, Modal } from 'react-native'; // Adicionado o Modal
 //import { RNCamera } from 'react-native-camera';
 import { Picker, StyleSheet } from "react-native";
+import {UserContext} from '../../context/UserContext';
 //import { launchImageLibrary } from 'react-native-image-picker';
 //renderCameraModal = () => (
 function SignUpPets({navigation}){
@@ -21,12 +24,14 @@ function SignUpPets({navigation}){
 		const [racaField, setRacaField] = useState('');
 		const [selectedValue, setSelectedValue] = useState("dog");
 		const [file, setFile] = useState();
-		count = 1;
+		const [selectedImage, setSelectedImage] = useState([]);
+		const {state:person} =useContext(UserContext);
+		//count = 1;
         const handleRegisterButtonClick = async() =>{
 
 		
 			if( nameField != '' && sobreField != '' && idadeField != '' && selectedValue !='' && sexoField !='' && racaField !='' ){
-				let res = await Api.SignUpPets(nameField,sexoField,sobreField,count,idadeField,selectedValue,racaField);
+				let res = await Api.SignUpPets(nameField,sexoField,sobreField,person.id,idadeField,selectedValue,racaField);
 					if( res.status ){
 						
 						alert(res.msg);
@@ -43,31 +48,25 @@ function SignUpPets({navigation}){
 			}
                 
         };
-		const handleChoosePhoto = () => {
-			const options = {
-			  noData: true,
-			  title: 'Foto de avaliação',
-			  takePhotoButtonTitle: 'Escolha uma foto',
-			  chooseFromLibraryButtonTitle: 'Selecione da galeria uma foto',
-			  selectionLimit: 1, // Se deixar 1, será permitido apenas uma foto e 0 várias 
-			};
-		
-			launchImageLibrary(options, async (response) => {
-			  if (response.didCancel) {
-				console.log('Usuário cancelou a seleção');
-			  } else if (response.error) {
-				console.log('Ocorreu um erro.');
-			  } else {
-				const photoFile = {
-				  uri: asset.uri,
-				  name: asset.fileName,
-				  type: 'image/jpeg',
-				};
-		
-				setFile(photoFile);
+		let openImagePickerAsync = async () => {
+
+			let result = await ImagePicker.launchImageLibraryAsync({
+				mediaTypes: ImagePicker.MediaTypeOptions.All,
+				aspect: [4, 3],
+				quality: 1,
+			  });
+			  
+			  const count="localUri"+selectedImage.length;
+	  
+			  if ( ! result.cancelled ) {
+	  
+				setSelectedImage((selectedImage)=>[...selectedImage,{ count: result.uri }]);
+			  
 			  }
-			});
-		  };
+			  
+			  console.log(selectedImage);
+		
+		}
 		const handleLoginButtonClick = () =>{
 
 			navigation.navigate('SignUpPets');   
@@ -167,10 +166,14 @@ function SignUpPets({navigation}){
 	
 			
             </View>
-			<TouchableOpacity style={styles.btnSubmit1} onPress={handleChoosePhoto}>
-				<Text style={styles.submitText}>Adicionar imagem</Text>
-	
-			</TouchableOpacity>
+			<TouchableOpacity style={ styles.btnAddPhoto } onPress={openImagePickerAsync} >
+                                   <Image 
+
+                                        style={{ height:24,width:24}}
+                                        source={ require("../../assets/Events/camera.png") }
+                                   
+                                   />
+                                </TouchableOpacity>
 			<TouchableOpacity style={styles.btnSubmit} onPress={handleRegisterButtonClick}>
 				<Text style={styles.submitText}>Cadastrar</Text>
 					<Image style={ styles.iconButtonsubmit } source={require("../../assets/login/paw.png")} />

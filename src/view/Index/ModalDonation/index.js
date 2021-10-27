@@ -1,38 +1,110 @@
-import React, { useState, useEffect,useRef } from 'react';
-import { Image,View,Button,Text,TextInput,TouchableOpacity, ScrollView } from 'react-native';
-import { Fontisto } from '@expo/vector-icons';
-import styles from "./styles";
-import Modal from 'react-native-modal';
-import { Entypo } from "@expo/vector-icons";
-import ContainerEvent from "../../../components/ContainerEvents";
-import iconevent_1 from "../../../assets/main/event_1.png"
-import iconevent_2 from "../../../assets/main/event_2.png";
-import iconevent_3 from "../../../assets/main/event_3.png";
-import Navigation from '../../../../Navigation';
+import React, { useState,useContext,useEffect} from 'react';
+import { View,KeyboardAvoidingView,Image
+,TouchableOpacity,Text,Animated} from 'react-native';
+import  styles from './styles'
+import { ScrollView } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Api  from '../../Apis/Donation/Api';
+import Header from '../../../components/Header';
+import { Input, SocialIcon  } from 'react-native-elements';
+import  {AsyncStorage}  from 'react-native';
+import { NavigationActions, StackActions } from 'react-navigation';
+//import { UserContext } from '../../context/UserContext';
+import {useNetInfo} from "@react-native-community/netinfo";
+import {UserContext} from '../../../context/UserContext';
 
+function ModalDonation({navigation,route}){
+	const { dados }= route.params; 
+    //console.log(dados);
+	const [listpets,setListPets] = useState([]);
+	const [loading,setLoading] = useState(false);
+	const [state,setState] = useState(false);
+	
+	useEffect( ()=>{
+		
+		getUseru();
+	
+	}, []);
+	
+	const getUseru = async ()=>{
+		
+		setLoading(true);
+		setListPets([]);
+	
+		let res= await Api.getUseru(dados.users_id);
+	   
+		if( res.status ){
+			
+			setListPets(res.msg.data);
+			//const { id }=(res.msg.data);
+			console.log(res.msg.data);
+			//console.log(id.user_id);
+		}else{
+	
+			alert("Erro ao buscar os eventos.");
+		}
+        //checkboxes.map(item => console.log("Checkbox atual: ", item.name));
+		teste = listpets.map(item => console.log(item.name));
+        console.log(teste);
+		setLoading(false);
+		setState(true);
+		
+	}
+	/////////////////////////////////////////////
+	
+	
 
-function ModalEvents({ isVisible, onClose,navigation,coordinate }) {
-   
-    return(
-      <>
-      <Modal swipeDirection="down" isVisible={isVisible}>
-            <View style={ styles.Container }>
+		const handleLoginButtonClick = () =>{
 
-                <View style={ styles.header }>
-                    <TouchableOpacity onPress={onClose} style={ styles.btnclose }>
-                        <Entypo name="cross" size={35} color="#fff" />
-                    </TouchableOpacity>
-                </View>
-                
-                <View style={ styles.modalBody }>
-                    <ContainerEvent title="Animal Perdido"  iconevent={ iconevent_1 } screen="LostPet" color="#faab64"  onClose={onClose} navigation={navigation} coordinate={coordinate} type="0"/>
-                    <ContainerEvent title="Casinha comunitária" iconevent={ iconevent_2 } screen="CommunityHouse" color="#5cc5c0"  onClose={onClose} navigation={navigation} coordinate={coordinate} type="1"  />
-                    <ContainerEvent title="Denúncia" iconevent={ iconevent_3 } screen="Complaint" color="red" onClose={onClose} navigation={navigation} coordinate={coordinate} type="2" />
-                </View>
-               
+			navigation.navigate('SignIn');   
+
+		};
+		
+
+        return (
+
+        <ScrollView style={{ backgroundColor:'white' }}>
+            <Header navigation={navigation} title=" Dados da Doação" />           
+        	<View  style={ styles.container} >
+				
+            	<Image style={ styles.image } source={ require("../../../assets/login/cat.png") } />
+
+				<View style={{ backgroundColor: "violet", flex: 0.9, width: '90%',marginBottom:30}} > 
+				<Text style={{fontWeight: 'bold'}}>                                             {dados.name}</Text>
+				<View style={{flexDirection: "row"}} > 
+				<Icon
+						name='github'
+						size={20}
+						color='#B33BF6'
+						rigth={80}
+					/>
+                <Text>  Titulo:{dados.title}</Text>
+				</View>
+				<View style={{flexDirection: "row"}} > 
+				<Icon
+						name='link'
+						size={20}
+						color='#B33BF6'
+						rigth={80}
+					/>
+                <Text>  Link:{dados.link}</Text>
+				</View>
+				
             </View>
-      </Modal>
-     </>
-    );
+			<View style={{ backgroundColor: "pink", flex: 0.9, width: '90%' ,flexDirection: "row",marginBottom:10 }} > 
+				<Image style={ styles.image2 } source={ require("../../../assets/login/login.png") } />
+				<Text style={{right:80,fontWeight: 'bold', marginTop:42}} >Eduardo Borges</Text>
+			</View>
+			<View style={{ backgroundColor: "white", flex: 0.9, width: '90%' ,marginBottom:20  }} > 
+				
+				<Text>Sobre:{dados.sobre}</Text>
+			</View>
+
+            </View>
+
+    	</ScrollView>
+                
+            
+        );
 }
-export default ModalEvents;
+export default ModalDonation;

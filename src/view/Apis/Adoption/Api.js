@@ -73,6 +73,54 @@ export default{
         
         return json;
 
+    },
+    getAdoptiona:async (id_animals) =>{
+
+        const token = await AsyncStorage.getItem('token');
+        //const id_users = await AsyncStorage.getItem('id');
+        //id_users = 2;
+        const req =  await fetch(`${BASE_API}/adocaos/getp`,{
+        
+        method: 'POST',
+        headers:{
+
+            Accept: 'application/json',
+            'Content-Type': 'application/json' 
+
+        },
+
+        body: JSON.stringify({id_animals})
+
+        });
+        
+        const json = await req.json();
+        
+        return json;
+
+    },
+    getAdoptionu:async (id_users) =>{
+
+        const token = await AsyncStorage.getItem('token');
+        //const id_users = await AsyncStorage.getItem('id');
+        //id_users = 2;
+        const req =  await fetch(`${BASE_API}/adocaos/getu`,{
+        
+        method: 'POST',
+        headers:{
+
+            Accept: 'application/json',
+            'Content-Type': 'application/json' 
+
+        },
+
+        body: JSON.stringify({id_users})
+
+        });
+        
+        const json = await req.json();
+        
+        return json;
+
     }
 
 };
