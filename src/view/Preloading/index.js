@@ -15,8 +15,14 @@ function Preload({navigation,route}){
        const checkToken = async ()=>{
 
        const token = await AsyncStorage.getItem('token');
+       const BASE_API_CACHE=await AsyncStorage.getItem('BASE_API');
+
+
+       if( BASE_API_CACHE != null)
+            BASE_API=BASE_API_CACHE;
+
  
-       if( token === null ){
+       if( token === null ||  BASE_API == "" ){
            
                 navigation.navigate('SignIn');
 

@@ -4,18 +4,20 @@ import styles from './styles';
 import { Input,Text  } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from "../../components/Header";
-
+import  {AsyncStorage}  from 'react-native';
 
 function Admin({props,navigation}){
 
         const [url,setURL]=useState("");
 
-        const handleLinkButtonClick = () =>{
+        const handleLinkButtonClick = async() =>{
             
             if( url != "" ){
 
                 BASE_API=url+'/api';
+                await AsyncStorage.setItem('BASE_API',BASE_API);
                 alert("Url inserida!");
+                
                 navigation.navigate("SignIn");
 
             }else{
