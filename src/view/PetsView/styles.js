@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     },
     txt2:{
         color:'grey',
+        marginTop:20,
     },
     
     btnRegister:{

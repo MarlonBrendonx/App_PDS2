@@ -55,7 +55,7 @@ function Adoption ({navigation}) {
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
       <Image style={ styles.image2 } source={ require("../../../assets/login/login.png") } />
       <View>
-      <Text style={[styles.title, textColor,]}>{"NOME: "+item.breed}</Text>
+      <Text style={[styles.title, textColor,]}>{"NOME: "+item.name}</Text>
       <Text></Text>
       <Text style={[styles.title, textColor,]}>{"SEXO: "+item.sex}</Text>
       <Text></Text>

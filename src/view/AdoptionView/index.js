@@ -1,4 +1,4 @@
-import React, { useState,useContext} from 'react';
+import React, { useState,useContext,useEffect} from 'react';
 import { View,KeyboardAvoidingView,Image
 ,TouchableOpacity,Text,Animated } from 'react-native';
 import  styles from './styles'
@@ -13,32 +13,71 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import {useNetInfo} from "@react-native-community/netinfo";
 import {UserContext} from '../../context/UserContext';
 
-function PetsView({navigation,route}){
-		const { dados }= route.params; 
-		const handleLoginButtonClick = () =>{
+function AdoptionView({navigation,route}){
+	const { dados }= route.params; 
+	const [listpets,setListPets] = useState([]);
+	const [listuser,setListUser] = useState([]);
+	const [loading,setLoading] = useState(false);
+	const [state,setState] = useState(false);
+	
+	useEffect( ()=>{
+		
+		getAdoptiona();
+	
+	}, []);
+	
+	const getAdoptiona = async ()=>{
+		
+		setLoading(true);
+		setListPets([]);
+	
+		let res= await Api.getAdoptiona(dados.id_adoption);
+	   
+		if( res.status ){
+			
+			setListPets(res.msg.data);
+			//const { id }=(res.msg.data);
+			console.log(res.msg.data);
+			//console.log(id.user_id);
+		}else{
+	
+			alert("Erro ao buscar os eventos.");
+		}
+		
+		setLoading(false);
+		setState(true);
+		getAdoptionu();
+	}
+	/////////////////////////////////////////////
+	
+	const getAdoptionu = async ()=>{
+		
+		setLoading(true);
+		setListUser([]);
+	    //teste = listpets.map(item => item.user_id);
+		//console.log(teste)
+		let res= await Api.getAdoptionu(listpets.map(item => item.user_id));
+	   
+		if( res.status ){
+			
+			
+			setListUser(res.msg.data);
+			console.log(res.msg.data);
+		}else{
+	
+			alert("Erro ao buscar os eventos.");
+		}
+		
+		setLoading(false);
+		setState(true);
+	}
 
+		const handleLoginButtonClick = () =>{
+ 
 			navigation.navigate('SignIn');   
 
 		};
-		const signupadoption =  async() =>{
-			if( dados !== null){
-				let res = await Api.Adoption(dados.name,dados.sex,dados.id_animals,dados.age,dados.species,dados.breed);
-					if( res.status ){
-						
-						alert(res.msg);
-						
-
-					}else{
-						
-						alert("Erro "+res.error);
-						
-					}
-			}else{
-
-				alert("Preencha os campos!");
-			}
-		}
-
+		
         return (
 
         <ScrollView style={{ backgroundColor:'white' }}>
@@ -47,8 +86,8 @@ function PetsView({navigation,route}){
 				
             	<Image style={ styles.image } source={ require("../../assets/login/cat.png") } />
 
-				<View style={{ backgroundColor: "white", flex: 0.9, width: '90%',marginBottom:30}} > 
-				<Text style={{fontWeight: 'bold'}}>     {dados.name}</Text>
+				<View style={{ backgroundColor: "violet", flex: 0.9, width: '90%',marginBottom:30}} > 
+				<Text style={{fontWeight: 'bold'}}>                                             {dados.name}</Text>
 				<View style={{flexDirection: "row"}} > 
 				<Icon
 						name='github'
@@ -79,7 +118,7 @@ function PetsView({navigation,route}){
             </View>
 			<View style={{ backgroundColor: "pink", flex: 0.9, width: '90%' ,flexDirection: "row",marginBottom:10 }} > 
 				<Image style={ styles.image2 } source={ require("../../assets/login/login.png") } />
-				<Text style={{right:80,fontWeight: 'bold', marginTop:42}} >Eduardo Borges</Text>
+				<Text style={{right:80,fontWeight: 'bold', marginTop:42}} >Responsável:{listuser.map(item => item.user_id)}</Text>
 			</View>
 			<View style={{ backgroundColor: "white", flex: 0.9, width: '90%' ,marginBottom:20  }} > 
 				
@@ -93,4 +132,4 @@ function PetsView({navigation,route}){
             
         );
 }
-export default PetsView;
+export default AdoptionView;

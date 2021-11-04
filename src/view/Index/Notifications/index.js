@@ -26,7 +26,7 @@ function Notifications({ isVisible, onClose,navigation,listevents }) {
     const componentDidMount = () => {
         setInterval(() => {
             getNotifications();
-        }, 30000);
+        }, 3000000);
     }
 
     const getNotifications = async ()=>{
