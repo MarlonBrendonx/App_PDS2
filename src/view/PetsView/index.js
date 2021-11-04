@@ -5,7 +5,7 @@ import  styles from './styles'
 import { ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Api  from '../Apis/Adoption/Api';
-import Api  from '../Apis/SignUpPets/Api';
+//import Api  from '../Apis/SignUpPets/Api';
 import Header from '../../components/Header';
 import { Input, SocialIcon  } from 'react-native-elements';
 import  {AsyncStorage}  from 'react-native';
@@ -17,10 +17,49 @@ import {UserContext} from '../../context/UserContext';
 function PetsView({navigation,route}){
 		const { dados }= route.params; 
 		const remove =  async() =>{
-			let res = await Api.remove(dados.id_animals);
-			navigation.navigate('SignIn');   
-
-		};
+			if( dados !== null){
+				alert("Não é possível remover se estiver na lista de adoção");
+				let json= await Api.remove(dados.id_animals);
+				
+				if( json.status ){
+						
+					alert(json.msg);
+	
+					//navigation.navigate("DonationView");
+	
+				}else{
+						
+					alert("Erro "+json.error);
+						
+				}
+				
+			}else{
+	
+				alert("Sem dados!");
+			}
+		}
+		const removea =  async() =>{
+			if( dados !== null){
+				
+				let json= await Api.removea(dados.id_animals);
+				
+				if( json.status ){
+						
+					alert(json.msg);
+	
+					//navigation.navigate("DonationView");
+	
+				}else{
+						
+					alert("Erro "+json.error);
+						
+				}
+				
+			}else{
+	
+				alert("Sem dados!");
+			}
+		}
 		const signupadoption =  async() =>{
 			if( dados !== null){
 				let res = await Api.Adoption(dados.name,dados.sex,dados.id_animals,dados.age,dados.species,dados.breed);
@@ -93,11 +132,16 @@ function PetsView({navigation,route}){
 				<Text>Sobre:{dados.information}</Text>
 			</View>
 			<TouchableOpacity style={styles.btnSubmit} onPress={remove}>
-					<Text style={styles.submitText}>Editar</Text>
+					<Text style={styles.submitText}>Excluir</Text>
 					</TouchableOpacity>
 				<TouchableOpacity style={styles.btnRegister} onPress={signupadoption}>
 					<>
 						<Text style={styles.txt2}>Adicionar para adoção </Text>
+					</>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.btnRegister} onPress={removea}>
+					<>
+						<Text style={styles.txt2}>Remover da adoção </Text>
 					</>
 				</TouchableOpacity>
             </View>

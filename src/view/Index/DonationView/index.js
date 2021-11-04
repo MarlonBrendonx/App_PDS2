@@ -64,11 +64,7 @@ function DonationView ({navigation}) {
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
       <Image style={ styles.image2 } source={ require("../../../assets/walp1.jpg") } />
       <View>
-      <Text style={[styles.title, textColor,]}>{"Titulo: "+item.title}</Text>
-      
-      <TouchableOpacity style={styles.btnSubmit} onPress={handleViewButtonClick}>
-      <Text style={styles.submitText}>Contribuir</Text>
-    </TouchableOpacity>
+      <Text style={[styles.title, textColor,]}>{"TITULO: "+item.title}</Text>
   
       </View>
     </TouchableOpacity>
@@ -77,7 +73,7 @@ function DonationView ({navigation}) {
     const backgroundColor = item.id_animals === selectedId ? "#6e3b6e" : "#f9c2ff";
     const color = item.id_animals=== selectedId ? 'white' : 'black';
     //setSelectedId(item.id),
-    return (
+    return (  
       <Item
         item={item}
         onPress={() =>  navigation.navigate('ModalDonation',
@@ -106,7 +102,7 @@ function DonationView ({navigation}) {
       </SafeAreaView>
       <View>
       <TouchableOpacity style={styles.btnSubmit} onPress={handleLoginButtonClick}>
-				<Text style={styles.submitText}>Cadastrar Arrecadação</Text>
+				<Text style={styles.submitText}>Cadastrar Doação</Text>
 			</TouchableOpacity>
       </View> 
     </ScrollView>
@@ -131,7 +127,7 @@ const styles = StyleSheet.create({
   image2:{
 
     resizeMode: "contain",
-    height:100,
+    height:80,
     width: 200,
     right:50,
     },

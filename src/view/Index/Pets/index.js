@@ -1,9 +1,10 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect,useContext} from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native";
 import Api  from '../../Apis/SignUpPets/Api';
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity,Image } from "react-native";
 import Header from '../../../components/Header';
+import {UserContext} from '../../../context/UserContext';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -22,6 +23,7 @@ function Pets ({navigation}) {
 	const [loading,setLoading] = useState(false);
 	const [state,setState] = useState(false);
 	
+  const {state:person} =useContext(UserContext);
 	useEffect( ()=>{
 		
 		getPets();
@@ -33,7 +35,7 @@ function Pets ({navigation}) {
 		setLoading(true);
 		setListPets([]);
 	
-		let res= await Api.getPets();
+		let res= await Api.getPets(person.id);
 	   
 		if( res.status ){
 			

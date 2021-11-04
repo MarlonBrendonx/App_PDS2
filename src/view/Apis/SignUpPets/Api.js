@@ -49,11 +49,11 @@ export default{
         return json;
 
     },
-    getPets:async () =>{
+    getPets:async (id_users) =>{
 
         const token = await AsyncStorage.getItem('token');
         //const id_users = await AsyncStorage.getItem('id');
-        id_users = 2;
+        //id_users = 2;
         const req =  await fetch(`${BASE_API}/animals/get`,{
         
         method: 'POST',
@@ -73,29 +73,34 @@ export default{
         return json;
 
     },
-    remove:async(id_animals) =>{
 
-        const token = await AsyncStorage.getItem('token');
-       
-        const req =  await fetch(`${BASE_API}/animals/remove`,{
-             
-        method: 'POST',
-        headers:{
-
-            Accept: 'application/json',
-            'Content-Type': 'application/json' 
-
-        },
-
-        body: JSON.stringify({token,id_animals})
-
-        });
         
-        const json = await req.json();
-       
-        return json;
 
-    
+    UploadImagePets:async (formData)=>{
+
+        
+             
+        const req = await fetch(`${BASE_API}/animals/uploadImage`,{
+
+                method: 'POST',
+                headers:{
+
+                        Accept: 'application/json',
+                        'Content-Type': 'multipart/form-data' 
+
+                },
+
+                    
+                body: formData
+                   
+        });
+
+        const json = await req.json();
+        
+
+        return json;
+                            
     }
+    
 
 };

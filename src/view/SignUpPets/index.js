@@ -22,7 +22,7 @@ function SignUpPets({navigation}){
 		const [idadeField, setIdadeField] = useState('');
 		const [sexoField, setSexoField] = useState('');
 		const [racaField, setRacaField] = useState('');
-		const [selectedValue, setSelectedValue] = useState("dog");
+		const [selectedValue, setSelectedValue] = useState("cachorro");
 		const [file, setFile] = useState();
 		const [selectedImage, setSelectedImage] = useState([]);
 		const {state:person} =useContext(UserContext);
@@ -48,6 +48,74 @@ function SignUpPets({navigation}){
 			}
                 
         };
+		const uploadImages = async(form)=>{
+
+			let json = await Api.UploadImagePets(
+				form,
+			);
+	
+			return json.status;
+	   }
+		/*const handleRegisterButtonClick = async() =>{
+
+			
+			if( nameField != '' && sobreField != '' && idadeField != '' && selectedValue !='' && sexoField !='' && racaField !='' ){
+				let json = await Api.SignUpPets(nameField,sexoField,sobreField,person.id,idadeField,selectedValue,racaField);
+					
+				if( json.status ){
+						
+					alert(json.msg);
+					StateInsertList();
+					
+					  const formData =new FormData();
+			  
+					  Object.keys(selectedImage).map(function(key,value) {
+					  
+						  formData.append('image', {
+							  uri: selectedImage[value].count,
+							  type: "image/jpeg",
+							  name: selectedImage[value].count
+						   }),
+			
+						   formData.append('id_user',person.id)
+						   formData.append('id_animals',json.msg) 
+			  
+						  const  status= uploadImages(formData);
+			
+						  if( ! status ){
+							 setStateError(true);
+							 return;
+						  }
+			
+					  });
+					
+			
+					  if( stateError ){
+	
+						  alert("Oops! Não conseguimos inserir as imagens :(\n");
+						  
+					  
+					  }else if( !stateError ){
+						 
+						  alert("Evento cadastrado com sucesso!\n");
+						  navigation.goBack();
+	
+					  }
+					  
+					  setStateError(false);
+					  
+				}else{
+	
+					alert("Houve algum erro!");
+				}
+				
+			}else{
+	
+				alert("[*] Campos vazios!");
+			}
+		   
+	
+		};*/
 		let openImagePickerAsync = async () => {
 
 			let result = await ImagePicker.launchImageLibraryAsync({
@@ -77,13 +145,12 @@ function SignUpPets({navigation}){
 
 		//const [selectedValue, setSelectedValue] = useState("java");
         <ScrollView style={{ backgroundColor:'white' }}>
-                        
+            <Header navigation={navigation} title="Cadastro de pet" />           
         	<View  style={ styles.container} >
 
             	<Image style={ styles.image } source={ require("../../assets/login/login.png") } />
-                <Text style={ styles.textTitle }> Vamos Começar !</Text>
-                <Text>Cadastre um Pet</Text>
-
+                <Text style={ styles.textTitle }> Cadastre um Pet!</Text>
+            </View>  
             <View style={styles.containerInputs}>  
 				<Input
 					style={styles.input}
@@ -165,8 +232,9 @@ function SignUpPets({navigation}){
     </View>
 	
 			
-            </View>
-			<TouchableOpacity style={ styles.btnAddPhoto } onPress={openImagePickerAsync} >
+            
+			<View >
+                                <TouchableOpacity style={ styles.btnAddPhoto } onPress={openImagePickerAsync} >
                                    <Image 
 
                                         style={{ height:24,width:24}}
@@ -174,13 +242,29 @@ function SignUpPets({navigation}){
                                    
                                    />
                                 </TouchableOpacity>
+                                <View style={styles.containerImage}>
+                                    <ScrollView horizontal={true}>
+                                        
+                                            {
+
+                                            selectedImage.map( localUri =>   
+                                            <Image
+                                                style={ styles.imgsContainer }
+                                                key={ localUri.count }
+                                                source={{ uri:localUri.count }}
+                                                />
+                                            )}
+									</ScrollView> 
+								</View>	
+			</View>
+			<View>
 			<TouchableOpacity style={styles.btnSubmit} onPress={handleRegisterButtonClick}>
 				<Text style={styles.submitText}>Cadastrar</Text>
 					<Image style={ styles.iconButtonsubmit } source={require("../../assets/login/paw.png")} />
 			</TouchableOpacity>
-				                
-            </View>
-
+			
+			</View>
+			</View>
     	</ScrollView>
                 
             

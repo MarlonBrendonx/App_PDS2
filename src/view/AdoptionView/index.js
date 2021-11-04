@@ -73,7 +73,7 @@ function AdoptionView({navigation,route}){
 	}
 
 		const handleLoginButtonClick = () =>{
-
+ 
 			navigation.navigate('SignIn');   
 
 		};

@@ -121,6 +121,54 @@ export default{
         
         return json;
 
+    },
+    remove:async(id_animals) =>{
+
+        const token = await AsyncStorage.getItem('token');
+       
+        const req =  await fetch(`${BASE_API}/animals/remove`,{
+             
+        method: 'POST',
+        headers:{
+
+            Accept: 'application/json',
+            'Content-Type': 'application/json' 
+
+        },
+
+        body: JSON.stringify({token,id_animals})
+
+        });
+        
+        const json = await req.json();
+       
+        return json;
+
+    
+    },
+    removea:async(id_adoption) =>{
+
+        const token = await AsyncStorage.getItem('token');
+       
+        const req =  await fetch(`${BASE_API}/adocaos/remove`,{
+             
+        method: 'POST',
+        headers:{
+
+            Accept: 'application/json',
+            'Content-Type': 'application/json' 
+
+        },
+
+        body: JSON.stringify({token,id_adoption})
+
+        });
+        
+        const json = await req.json();
+       
+        return json;
+
+    
     }
 
 };

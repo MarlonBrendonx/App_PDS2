@@ -6,6 +6,7 @@ import { ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Api  from '../../Apis/Donation/Api';
 import Header from '../../../components/Header';
+//import {UserContext} from '../../../context/UserContext';
 import { Input, SocialIcon  } from 'react-native-elements';
 import  {AsyncStorage}  from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -19,7 +20,7 @@ function ModalDonation({navigation,route}){
 	const [listpets,setListPets] = useState([]);
 	const [loading,setLoading] = useState(false);
 	const [state,setState] = useState(false);
-	
+	const {state:person} =useContext(UserContext);
 	useEffect( ()=>{
 		
 		getUseru();
@@ -44,14 +45,37 @@ function ModalDonation({navigation,route}){
 			alert("Erro ao buscar os eventos.");
 		}
         //checkboxes.map(item => console.log("Checkbox atual: ", item.name));
-		teste = listpets.map(item => console.log(item.name));
-        console.log(teste);
+		//teste = listpets.map(item => console.log(item.name));
+        //console.log(teste);
 		setLoading(false);
 		setState(true);
 		
 	}
 	/////////////////////////////////////////////
-	
+	const remove =  async() =>{
+		if( dados !== null){
+			if(dados.users_id==person.id){
+				let json= await Api.remove(dados.id_donation);
+			
+				if( json.status ){
+					
+					alert(json.msg);
+
+					navigation.navigate("DonationView");
+
+				}else{
+					
+					alert("Erro "+json.error);
+					
+				}
+			}else{
+				alert("Somente propietario pode excluir");
+			}
+		}else{
+
+			alert("Sem dados!");
+		}
+	}
 	
 
 		const handleLoginButtonClick = () =>{
@@ -99,7 +123,9 @@ function ModalDonation({navigation,route}){
 				
 				<Text>Sobre:{dados.sobre}</Text>
 			</View>
-
+				<TouchableOpacity style={styles.btnSubmit} onPress={remove}>
+					<Text style={styles.submitText}>Excluir</Text>
+				</TouchableOpacity>
             </View>
 
     	</ScrollView>
